@@ -14,7 +14,7 @@
 	if($db_conn){
 		executePlainSQL("Drop table log_In_Tbl");
 		executePlainSQL("create table log_In_Tbl (username varchar2(30), password varchar2(30), tbl varChar(30))");
-		executePlainSQL("insert into log_In_Tbl values('familyphysician', 1234, 'family_physician')");
+		executePlainSQL("insert into log_In_Tbl values('familyphysician', '1234', 'family_physician')");
 		executePlainSQL("insert into log_In_Tbl values('patient', '1234', 'patient_registered')");
 		executePlainSQL("insert into log_In_Tbl values('specialist', '1234', 'specialist')");
 
