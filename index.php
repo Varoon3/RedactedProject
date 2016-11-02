@@ -3,37 +3,35 @@
 <?php
 if($_GET["tbl"] == "family_physician"){
 	$id = 242518;
-	echo "fuck you varoon"; 
+	$tbl = "Health_Care_Provider";
+	$field = "hid";
 
 }
 else if($_GET["tbl"] == "patient_registered"){
 	$id = 160839453;
+    $tbl = "patient_registered";
+	$field = "carecardNum";
 }
 //must be specialist
 else{
 	$id = 141582;
+	$tbl = "Health_Care_Provider";
+	$field = "hid";
 }
 
-/*
+
 $db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
-		executePlainSQL("create table has_appointment(
-    carecardNum integer,
-    hid integer,
-    date char(20),
-    time char(20),
-    primary key(carecardNum, hid),
-    foreign key(carecardNum) references patient_registered
-        ON DELETE cascade
-        ON UPDATE cascade,
-    foreign key(hid) references health_care_provider
-        ON DELETE cascade
-        ON UPDATE cascade");
-		executePlainSQL("insert into has_appointment values(323212, 242518, '29/10/1995', '15:00')");		
-		$result = executePlainSQL("select name,carecard#, date, time from has_Appointment INNER JOIN(select * from Health_Care_Record where hid='$id') ON (select * from Health_Care_Record where hid='$id').carecard# = has_Appointment.carecard#");
-		validateResult($result);
-		printResult($result);
+
+		$result = executePlainSQL("select NAME from $tbl where $field = $id");
+		if($tbl == "Health_Care_Provider")
+			echo "<p> Hello Dr. ";
+		else
+			echo "<p> Hello ";
+		printWelcome($result);
+		echo "</p>";
+		
 		OCICommit($db_conn);
 		
 	OCILogoff($db_conn);
@@ -71,19 +69,14 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 }
 
-function printResult($result) { //prints results from a select statement
-	echo "<br>Got data from table Health_Care_Provider:<br>";
-	echo "<table>";
-	echo "<tr><th>ID</th><th>Name</th><th>Location</th></tr>";
-
+function printWelcome($result) { //prints results from a select statement
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["CARECARD#"] . "</td><td>" . $row["DATE"] . "</td><td>" . $row["TIME"] ."</td></tr>"; //or just use "echo $row[0]" 
+		echo $row["NAME"]; //want to extract last name later
 	}
-	echo "</table>";
 
 }
-*/
- 
+
+
   
 ?>
 
