@@ -20,7 +20,7 @@ else{
 }
 
 
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+	$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
 
@@ -31,6 +31,16 @@ $db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 			echo "<p> Hello ";
 		printWelcome($result);
 		echo "</p>";
+		
+		//want to present list of patients if provider
+		if($tbl == "Health_Care_Provider"){
+			$appointments = executePlainSQL("select h.carecardNum, p.name, h.dateAppointment, h.timeAppointment from patient_registered p, has_appointment h where h.carecardNum = p.carecardNum AND h.hid = $id");
+			printAppointments($appointments);
+		}
+		else{
+			$myAppointments = executePlainSQL("select r.name, h.dateAppointment, h.timeAppointment from has_appointment h, Health_Care_Provider r where h.carecardNum = $id AND r.hid = h.hid");
+			printMyAppointments($myAppointments);
+		}
 		
 		OCICommit($db_conn);
 		
@@ -75,6 +85,32 @@ function printWelcome($result) { //prints results from a select statement
 	}
 
 }
+
+function printAppointments($result) { //prints results from a select statement
+	echo "<br>Here are your upcoming appointments: <br>";
+	echo "<table>";
+	echo "<tr><th>Care Card Number</th><th>Name</th><th>Date</th><th>Time</th></tr>";
+
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		echo "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["DATEAPPOINTMENT"] . "</td><td>" . $row["TIMEAPPOINTMENT"] . "</td></tr>"; //or just use "echo $row[0]" 
+	}
+	echo "</table>";
+
+}
+
+function printMyAppointments($result) { //prints results from a select statement
+	echo "<br>Here are your upcoming appointments: <br>";
+	echo "<table>";
+	echo "<tr><th>Name</th><th>Date</th><th>Time</th></tr>";
+
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["DATEAPPOINTMENT"] . "</td><td>" . $row["TIMEAPPOINTMENT"] . "</td></tr>"; //or just use "echo $row[0]" 
+	}
+	echo "</table>";
+
+}
+
+
 
 
   

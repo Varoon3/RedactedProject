@@ -8,17 +8,17 @@
 -- First drop any existing tables
 
 
-drop table family_physician;
-drop table specialist;
-drop table health_care_record;
-drop table has_appointment;
-drop table waitlist;
-drop table is_on;
-drop table medication;
-drop table takes;
-drop table prescribes;
-drop table health_care_provider;
-drop table patient_registered;
+drop table family_physician cascade constraints;
+drop table specialist cascade constraints;
+drop table health_care_record cascade constraints;
+drop table has_appointment cascade constraints;
+drop table waitlist cascade constraints;
+drop table is_on cascade constraints;
+drop table medication cascade constraints;
+drop table takes cascade constraints;
+drop table prescribes cascade constraints;
+drop table health_care_provider cascade constraints;
+drop table patient_registered cascade constraints;
 
 
 -- Now we create the tables again
@@ -43,8 +43,8 @@ create table patient_registered(
     carecardNum number(9,0) primary key,
     name varchar2(30),
     location varchar2(100),
-    familyPhysician number(9,0),
-    foreign key(familyPhysician) references family_physician(hid)
+    hid number(9,0),
+    foreign key(hid) references family_physician(hid)
          ON DELETE SET NULL
     );
 create table health_care_record(
@@ -113,28 +113,4 @@ create table prescribes(
         );
 
 
-
-insert into patient_registered values(160839453,'Charles Harris','Vancouver');
-insert into patient_registered values(199354543,'Susan Martin','Montreal');
-insert into patient_registered values(112348546,'Joseph Thompson','Vancouver'));
-insert into patient_registered values(115987938,'Christopher Garcia','Edmonton');
-insert into patient_registered values(132977562,'Angela Martinez','Victoria');
-insert into patient_registered values(269734834,'Thomas Robinson','Toronto');
-insert into patient_registered values(280158572,'Margaret Clark','Toronto');
-insert into patient_registered values(301221823,'Juan Rodriguez','Regina');
-insert into patient_registered values(318548912,'Dorthy Lewis','Montreal');
-insert into patient_registered values(320874981,'Daniel Lee','Vancouver'));
-insert into patient_registered values(322654189,'Lisa Walker','Vancouver'));
-insert into patient_registered values(348121549,'Paul Hall','Winnipeg');
-insert into patient_registered values(351565322,'Nancy Allen','Vancouver'));
-insert into patient_registered values(451519864,'Mark Young','Ottawa');
-insert into patient_registered values(455798411,'Luis Hernandez','Edmonton');
-insert into patient_registered values(462156489,'Donald King','Victoria');
-insert into patient_registered values(550156548,'George Wright','Toronto');
-insert into patient_registered values(552455318,'Ana Lopez','Edmonton');
-insert into patient_registered values(556784565,'Kenneth Hill','Winnipeg');
-insert into patient_registered values(567354612,'Karen Scott','Montreal');
-insert into patient_registered values(573284895,'Steven Green','Winnipeg');
-insert into patient_registered values(574489456,'Betty Adams','Vancouver'));
-insert into patient_registered values(578875478,'Edward Baker','Ottawa');
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

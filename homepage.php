@@ -9,7 +9,7 @@
 <p><input type="submit" value="Log in" name="log_in" ></p>
 </form>
 <?php
-	$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+	$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
 		executePlainSQL("Drop table log_In_Tbl");
