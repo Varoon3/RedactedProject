@@ -1,30 +1,30 @@
-insert into health_care_provider values (242518,'James Smith','Vancouver'); --
+insert into health_care_provider values (242518,'James Smith','Vancouver'); 
 insert into health_care_provider values (141582,'Mary Johnson','Vancouver');
-insert into health_care_provider values (811564,'John Williams','Vancouver'); --
-insert into health_care_provider values (254099,'Patricia Jones','Montreal'); --
+insert into health_care_provider values (811564,'John Williams','Vancouver'); 
+insert into health_care_provider values (254099,'Patricia Jones','Montreal'); 
 insert into health_care_provider values (890873,'Elizabeth Taylor','Montreal');
 insert into health_care_provider values (356187,'Robert Brown','Edmonton');
-insert into health_care_provider values (489456,'Linda Davis','Edmonton'); --
+insert into health_care_provider values (489456,'Linda Davis','Edmonton'); 
 insert into health_care_provider values (287321,'Michael Miller','Toronto');
-insert into health_care_provider values (248965,'Barbara Wilson','Toronto'); --
+insert into health_care_provider values (248965,'Barbara Wilson','Toronto'); 
 insert into health_care_provider values (159542,'William Moore','Toronto');
-insert into health_care_provider values (486512,'David Anderson','Victoria'); --
-insert into health_care_provider values (619023,'Jennifer Thomas','Ottawa'); --
-insert into health_care_provider values (489221,'Richard Jackson','Winnipeg'); --
-insert into health_care_provider values (548977,'Ulysses Teach','Regina'); --
+insert into health_care_provider values (486512,'David Anderson','Victoria'); 
+insert into health_care_provider values (619023,'Jennifer Thomas','Ottawa'); 
+insert into health_care_provider values (489221,'Richard Jackson','Winnipeg'); 
+insert into health_care_provider values (548977,'Ulysses Teach','Regina'); 
 insert into health_care_provider values (487552,'Barak Jacob','Victoria');
 insert into health_care_provider values (334051,'Lucas Zamprogno','Ottawa');
 insert into health_care_provider values (472122,'Vanessa Aeschbach','Regina');
 insert into health_care_provider values (163784,'Varoon Mathur','Winnipeg');
 
-insert into family_physician values (242518,'James Smith','Vancouver'); --
-insert into family_physician values (911564,'John Williams','Vancouver'); --
-insert into family_physician values (254099,'Patricia Jones','Montreal'); --
-insert into family_physician values (489456,'Linda Davis','Edmonton'); --
-insert into family_physician values (248965,'Barbara Wilson','Toronto'); --
-insert into family_physician values (486512,'David Anderson','Victoria'); --
-insert into family_physician values (619023,'Jennifer Thomas','Ottawa'); --
-insert into family_physician values (489221,'Richard Jackson','Winnipeg'); --
+insert into family_physician values (242518,'James Smith','Vancouver'); 
+insert into family_physician values (911564,'John Williams','Vancouver'); 
+insert into family_physician values (254099,'Patricia Jones','Montreal'); 
+insert into family_physician values (489456,'Linda Davis','Edmonton'); 
+insert into family_physician values (248965,'Barbara Wilson','Toronto'); 
+insert into family_physician values (486512,'David Anderson','Victoria'); 
+insert into family_physician values (619023,'Jennifer Thomas','Ottawa'); 
+insert into family_physician values (489221,'Richard Jackson','Winnipeg'); 
 insert into family_physician values (548977,'Ulysses Teach','Regina');
 
 insert into specialist values (141582,'Mary Johnson','Vancouver');
@@ -39,17 +39,17 @@ insert into specialist values (163784,'Varoon Mathur','Winnipeg');
 
 insert into patient_registered values(160839453,'Charles Harris','Vancouver');
 insert into patient_registered values(199354543,'Susan Martin','Montreal');
-insert into patient_registered values(112348546,'Joseph Thompson','Vancouver'));
+insert into patient_registered values(112348546,'Joseph Thompson','Vancouver');
 insert into patient_registered values(115987938,'Christopher Garcia','Edmonton');
 insert into patient_registered values(132977562,'Angela Martinez','Victoria');
 insert into patient_registered values(269734834,'Thomas Robinson','Toronto');
 insert into patient_registered values(280158572,'Margaret Clark','Toronto');
 insert into patient_registered values(301221823,'Juan Rodriguez','Regina');
 insert into patient_registered values(318548912,'Dorthy Lewis','Montreal');
-insert into patient_registered values(320874981,'Daniel Lee','Vancouver'));
-insert into patient_registered values(322654189,'Lisa Walker','Vancouver'));
+insert into patient_registered values(320874981,'Daniel Lee','Vancouver');
+insert into patient_registered values(322654189,'Lisa Walker','Vancouver');
 insert into patient_registered values(348121549,'Paul Hall','Winnipeg');
-insert into patient_registered values(351565322,'Nancy Allen','Vancouver'));
+insert into patient_registered values(351565322,'Nancy Allen','Vancouver');
 insert into patient_registered values(451519864,'Mark Young','Ottawa');
 insert into patient_registered values(455798411,'Luis Hernandez','Edmonton');
 insert into patient_registered values(462156489,'Donald King','Victoria');
@@ -58,7 +58,7 @@ insert into patient_registered values(552455318,'Ana Lopez','Edmonton');
 insert into patient_registered values(556784565,'Kenneth Hill','Winnipeg');
 insert into patient_registered values(567354612,'Karen Scott','Montreal');
 insert into patient_registered values(573284895,'Steven Green','Winnipeg');
-insert into patient_registered values(574489456,'Betty Adams','Vancouver'));
+insert into patient_registered values(574489456,'Betty Adams','Vancouver');
 insert into patient_registered values(578875478,'Edward Baker','Ottawa');
 
 -- HEALTH CARE RECORD
