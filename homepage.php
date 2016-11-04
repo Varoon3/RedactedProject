@@ -17,7 +17,6 @@
 		executePlainSQL("insert into log_In_Tbl values('familyphysician', '1234', 'family_physician')");
 		executePlainSQL("insert into log_In_Tbl values('patient', '1234', 'patient_registered')");
 		executePlainSQL("insert into log_In_Tbl values('specialist', '1234', 'specialist')");
-
 		if(array_key_exists('log_in',$_POST)){
 			$uname = $_POST['username'];
 			$pass = $_POST['password'];
@@ -37,7 +36,6 @@
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
 	$statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
-
 	if (!$statement) {
 		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
 		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
@@ -45,7 +43,6 @@
 		echo htmlentities($e['message']);
 		$success = False;
 	}
-
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
 		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
@@ -53,12 +50,9 @@
 		echo htmlentities($e['message']);
 		$success = False;
 	} else {
-
 	}
 	return $statement;
-
 }
-
 function validateResult($result) { //prints results from a select statement
 	//if the result query is empty, so invalid username/password
 	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
@@ -67,7 +61,6 @@ function validateResult($result) { //prints results from a select statement
 	else{
 		header("Location:index.php?tbl=$row[0]");
 	}
-
 }
 ?>
 
