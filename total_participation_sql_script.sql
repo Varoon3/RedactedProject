@@ -175,7 +175,6 @@ insert into patient_registered values(574489456,'Betty Adams','Vancouver',548977
 insert into patient_registered values(578875478,'Edward Baker','Ottawa',242518);
 
 -- HEALTH CARE RECORD
--- HAS APPOINTMENT
 -- IS ON
 
 insert into has_appointment values (160839453,242518,'2016/23/11','13:00');
