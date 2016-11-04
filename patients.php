@@ -35,6 +35,7 @@ ul {
 	float:right;
 }
 </style>
+</head>
 <body>
 
 <p>
@@ -42,35 +43,28 @@ ul {
 
 
 <hr>
+
 <?php
+
+
 echo "<ul>";
 echo "<li class = \"item\"><a href=\"index.php?tbl=" .$_GET["tbl"]. "\">My Appointments</a></li>";
-if($_GET["tbl"] == "patient_registered"){
-	$id = 160839453;
-    $tbl = "patient_registered";
-	$field = "carecardNum";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
+//family_physician
+if($_GET["tbl"] == "family_physician"){
+	$id = 242518;
 }
-
-
+//must be specialist since patients have no access
 else{
-	if($_GET["tbl"] == "family_physician"){
-		$id = 242518;
-	}
-//must be specialist
-	else{
-		$id = 141582;
-	}
-	$tbl = "Health_Care_Provider";
-	$field = "hid";
-	
-	echo "<li class = \"item\"><a href=\"patients.php?tbl=" .$_GET["tbl"]. "\">My Patients</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Waitlist</a></li>";
-	
+	$id = 141582;
 }
+
+$tbl = "patient_registered";
+echo "<li class = \"item\"><a href=\"patients.php?tbl=" .$_GET["tbl"]. "\">My Patients</a></li>";
+echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
+echo "<li class = \"item\"><a href=\"homepage.php\">Waitlist</a></li>";
+	
+
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"homepage.php\">Log Out</a></li>";
 echo "</ul>";
@@ -78,28 +72,11 @@ echo "</ul>";
 
 $db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
+
 if($db_conn){
-	$result = executePlainSQL("select NAME from $tbl where $field = $id");
-	if($tbl == "Health_Care_Provider")
-		echo "<p> Hello Dr. ";
-	else
-		echo "<p> Hello ";
-	printWelcome($result);
-	echo "</p>";
-	
-	//want to present list of patients if provider
-	if($tbl == "Health_Care_Provider"){
-		$appointments = executePlainSQL("select h.carecardNum, p.name, h.dateAppointment, h.timeAppointment from patient_registered p, has_appointment h where h.carecardNum = p.carecardNum AND h.hid = $id order by h.dateAppointment, h.timeAppointment");
-		if(validateResult($appointments))
-			printAppointments($appointments);
-		else
-			echo "You have no upcoming appointments";
-	}
-	else{
-		$myAppointments = executePlainSQL("select r.name, h.dateAppointment, h.timeAppointment, r.location from has_appointment h, Health_Care_Provider r where h.carecardNum = $id AND r.hid = h.hid order by h.dateAppointment, h.timeAppointment");
-		validateResult($myAppointments);
-		printMyAppointments($myAppointments);
-	}
+
+	$result = executePlainSQL("select p.carecardNum, p.name, p.location from patient_registered p where p.hid = $id");
+	printPatients($result);
 	
 	OCICommit($db_conn);
 	
@@ -110,6 +87,7 @@ else {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
+
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
@@ -145,26 +123,19 @@ function printAppointments($result) { //prints results from a select statement
 	}
 	echo "</table>";
 }
-function printMyAppointments($result) { //prints results from a select statement
-	echo "<br>Here are your upcoming appointments: <br>";
+function printPatients($result) { //prints results from a select statement
+	echo "<br>Here are the patients registered with you: <br>";
 	echo "<table>";
-	echo "<tr><th>Doctor</th><th>Date</th><th>Time</th><th>Location</th></tr>";
+	echo "<tr><th>Care Card Number</th><th>Name</th><th>Location</th></tr>";
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["DATEAPPOINTMENT"] . "</td><td>" . $row["TIMEAPPOINTMENT"] . "</td><td>" . $row["LOCATION"] . "</td></tr>"; //or just use "echo $row[0]" 
+		echo "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["LOCATION"] . "</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
 }
-
-function validateResult($result) { //prints results from a select statement
-	//if the result query is empty, so invalid username/password
-	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			return false;
-	}
-	return true;
-}
   
+ 
 ?>
 
-</body>
-</head>
+
+
 </html>
