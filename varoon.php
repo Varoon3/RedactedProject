@@ -55,19 +55,24 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 
 function printRecord($result){
-	echo "<br> Health Care Record retrieved: <br>";
-	echo "<table>";
-	echo "<tr><th>Care Card Number</th><th>Record ID</th><th>Age</th><th>Ethnicity</th><th>Genetic History</th><th>Insurance</th></tr>";
+	$tbl_string = "";
+	$tbl_string .= "<br> Health Care Record retrieved: <br>";
+	$tbl_string .= "<table>";
+	$tbl_string .= "<tr><th>Care Card Number</th><th>Record ID</th><th>Age</th><th>Ethnicity</th><th>Genetic History</th><th>Insurance</th></tr>";
 	$count = 0;
+	
 	while($row = OCI_Fetch_Array($result, OCI_BOTH)){
 		$count++;
-		echo "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["RID"] . "</td><td>" . $row["AGE"] . "</td><td>" . $row["ETHNICITY"] . "</td><td>" . $row["GENETICHISTORY"] . "</td><td>" . $row["INSURANCE"] . "</td></tr>"; 
+		$tbl_string .= "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["RID"] . "</td><td>" . $row["AGE"] . "</td><td>" . $row["ETHNICITY"] . "</td><td>" . $row["GENETICHISTORY"] . "</td><td>" . $row["INSURANCE"] . "</td></tr>"; 
+		
 	}
+	$tbl_string .= "</table>";
 	if ($count == 0) {
 		echo "error";
+	} else{
+		echo $tbl_string;
 	}
-	echo "</table>";
-	echo $count;
+	
 }
 
 
