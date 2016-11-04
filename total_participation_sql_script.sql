@@ -141,14 +141,14 @@ insert into family_physician values (619023);
 insert into family_physician values (489221); 
 insert into family_physician values (548977);
 
-insert into specialist values (141582,'Mary Johnson',10);
-insert into specialist values (356187,'Robert Brown',12);
-insert into specialist values (287321,'Michael Miller',12);
-insert into specialist values (159542,'William Moore',8);
-insert into specialist values (487552,'Barak Jacob',2);
-insert into specialist values (334051,'Lucas Zamprogno',0);
-insert into specialist values (472122,'Vanessa Aeschbach',8);
-insert into specialist values (163784,'Varoon Mathur',1);
+insert into specialist values (141582,'Cardiology',10);
+insert into specialist values (356187,'Oncology',12);
+insert into specialist values (287321,'Podiatry',12);
+insert into specialist values (159542,'Surgery',8);
+insert into specialist values (487552,'Radiology',2);
+insert into specialist values (334051,'Oncology',0);
+insert into specialist values (472122,'Cardiology',8);
+insert into specialist values (163784,'Surgery',1);
 
 insert into patient_registered values(160839453,'Charles Harris','Vancouver',242518 );
 insert into patient_registered values(199354543,'Susan Martin','Montreal', 254099);
@@ -198,7 +198,6 @@ insert into health_care_record values(573284895, 21, 9, 'Indigenous', 'Blue Cros
 insert into health_care_record values(574489456, 22, 6, 'Caucasian', 'Blue Cross','TCTTCCTGCTCAGTGGCGCATGATTATCGTTGTTGCTAGCCAGCGTGGTAAGTAACAGCACCACTGCGAGCCTAATGTGCCCTTTCCACGAACACAGGGCTGTCCGATCCTATATTAGGACTCCGCAATGGGGTTAGCAAGTCGCACCCTAAACGATGTTGAAGACTCGCGATGTACATGCTCTGGTACAATACATACGTGTTCCGGCTGTTATCCTGCATCGGAACCTCAATCATGCATCGCACCAGCG');
 insert into health_care_record values(578875478, 23, 3, 'Asian', 'Blue Cross','TATTCGTGTCATCTAGGAGGGGCGCGTAGGATAAATAATTCAATTAAGATGTCGTTATGCTAGTATACGCCTACCCGTCACCGGCCATCTGTGTGCAGATGGGGCGACGAGTTACTGGCCCTGATTTCTCCGCTTCTAATACCACACACTGGGCAATACGAGCTCAAGCCAGTCTCGCAGTAACGCTCATCAGCTAACGAAAGAGTTAGAGGCTCGCTAATTCGCACTGTCGGGGTCCCTTGGGTGTTTT');
 
--- IS ON (cc#, region, specialty, pos, date, time)
 insert into is_on values (160839453, 'Vancouver', 'Cardiology', 1, '2011/03/01', '09:00');
 insert into is_on values (112348546, 'Vancouver', 'Cardiology', 2, '2012/27/04', '13:00');
 insert into is_on values (320874981, 'Vancouver', 'Cardiology', 3, '2015/13/11', '13:45');
@@ -271,8 +270,6 @@ insert into waitlist values('Ottowa', 'Podiatry');
 insert into waitlist values('Ottowa', 'Radiology');
 insert into waitlist values('Ottowa', 'Surgery');
 
--- TAKES
-
 insert into medication values ('Morpine', 80);
 insert into medication values ('Statin', 80);
 insert into medication values ('Abraxane', 80);
@@ -289,5 +286,27 @@ insert into medication values ('Abraxane', 120);
 insert into medication values ('luliconazole', 120);
 insert into medication values ('Gravol', 120);
 
--- PRESCRIBE
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+insert into takes values (567354612, 'Morpine', 80);
+insert into takes values (320874981, 'Statin', 80);
+insert into takes values (351565322, 'Abraxane', 80);
+insert into takes values (578875478, 'luliconazole', 80);
+insert into takes values (301221823, 'Statin', 100);
+insert into takes values (160839453, 'Abraxane', 100);
+insert into takes values (556784565, 'Gravol', 100);
+insert into takes values (462156489, 'Morpine', 120);
+insert into takes values (160839453, 'Statin', 120);
+insert into takes values (322654189, 'Abraxane', 120);
+
+insert into prescribe values (159542, 'Morpine', 80);
+insert into prescribe values (141582, 'Statin', 80);
+insert into prescribe values (356187, 'Abraxane', 80);
+insert into prescribe values (287321, 'luliconazole', 80);
+insert into prescribe values (487552, 'Gravol', 80);
+insert into prescribe values (159542, 'Morpine', 100);
+insert into prescribe values (472122, 'Statin', 100);
+insert into prescribe values (356187, 'Abraxane', 100);
+insert into prescribe values (487552, 'Gravol', 100);
+insert into prescribe values (163784, 'Morpine', 120);
+insert into prescribe values (141582, 'Statin', 120);
+insert into prescribe values (356187, 'Abraxane', 120);
+insert into prescribe values (287321, 'luliconazole', 120);
