@@ -174,7 +174,6 @@ insert into patient_registered values(573284895,'Steven Green','Winnipeg',548977
 insert into patient_registered values(574489456,'Betty Adams','Vancouver',811564);
 insert into patient_registered values(578875478,'Edward Baker','Ottawa',334051);
 
--- HEALTH CARE RECORD
 insert into health_care_record values(160839453, 1, 80, 'Caucasian', 'Great West','ATAGCAAGACCCTGCCTCTCTATTGATGTCACGGCGAATGTCGGGGAGACAGCAGCGGCTGCAGACATCAGATCGGAGTAATACTAACGTGGGATAACTCCGTAACTGACTACGGCCTTCTCTAGACTTTACTTGACCAGATACGCTGTCTTTGGCACGTGGATGGTTTAGAGGAATCACATCCAAGACTGGCTAAGCACGAAGCAACTCTTGAGTGTAAAATTGTTGTCTCCTGTATTCGGGATGCGGG');
 insert into health_care_record values(199354543, 2, 76, 'Hispanic',, 'Great West' 'TACTAGATGACTGCAGGGACTCCGACGTTAAGTACATTACCCCGTCATAGGCGCCGTTCAGGATCACGTTACCGCCATAAGATGGGAGCATGACTTCTTCTCCGCTGCGCCCACGCCAGTAGTGATTACTCCTATAACCCTTCTGAGAGTCCGGAGGCGGAAATCCGCCACGAATGAGAATGTATTTCCCCGACAATCATTATGGGGCGCTCCTAAGCTTTTCCACTCGGTTGAGCCGGCTAGGCCTCTC');
 insert into health_care_record values(112348546, 3, 75, 'Caucasian', 'Manulife','TGCCCGGAGTTTCGACGGACTGCTGCCGACACCCGGGCATTGTTTTAGGGGGGTTATTCGAGGGCACTCGCAGCCAACTTGTCGGGACCAGCCGGGCTGGTCATCGGGCTTATATAGCGAAATGCCGAGGACCCGGCCCCACGCTATGGAACGTCTTTAGCTCCGGCAGGCAATTAAGGACAACGTAAGTATGGCGGATATAAACAGAGAAACGGGCGAATATACCTATTCGTATCGTATCGGTAAATAG');
@@ -198,7 +197,27 @@ insert into health_care_record values(567354612, 20, 13, 'Hispanic', 'Great West
 insert into health_care_record values(573284895, 21, 9, 'Indigenous', 'Blue Cross','TCCATCATTGGCGGCCGAAGCCGCCATTCCATAGTGAGTCCTTCGTCTGTGTCTTTCTGTGCCAGATCGTCTAGCAAATTGCCGATCCAGTTTATCTCACGAAACTATAGTCGTACAGACCGAAATCTTAAGTCAAATCACGCGACTAGGCTCAGCTCTATTTTAGTGGTCATGGGTTTTGGTCCGCCCGAGCGGTGCAACCGATTAGGACCATGTAAAACATTTGTTACAAGTCTTCTTTTAAACACAA');
 insert into health_care_record values(574489456, 22, 6, 'Caucasian', 'Blue Cross','TCTTCCTGCTCAGTGGCGCATGATTATCGTTGTTGCTAGCCAGCGTGGTAAGTAACAGCACCACTGCGAGCCTAATGTGCCCTTTCCACGAACACAGGGCTGTCCGATCCTATATTAGGACTCCGCAATGGGGTTAGCAAGTCGCACCCTAAACGATGTTGAAGACTCGCGATGTACATGCTCTGGTACAATACATACGTGTTCCGGCTGTTATCCTGCATCGGAACCTCAATCATGCATCGCACCAGCG');
 insert into health_care_record values(578875478, 23, 3, 'Asian', 'Blue Cross','TATTCGTGTCATCTAGGAGGGGCGCGTAGGATAAATAATTCAATTAAGATGTCGTTATGCTAGTATACGCCTACCCGTCACCGGCCATCTGTGTGCAGATGGGGCGACGAGTTACTGGCCCTGATTTCTCCGCTTCTAATACCACACACTGGGCAATACGAGCTCAAGCCAGTCTCGCAGTAACGCTCATCAGCTAACGAAAGAGTTAGAGGCTCGCTAATTCGCACTGTCGGGGTCCCTTGGGTGTTTT');
--- IS ON
+
+-- IS ON (cc#, region, specialty, pos, date, time)
+insert into is_on values (160839453, 'Vancouver', 'Cardiology', 1, '2011/03/01', '09:00');
+insert into is_on values (112348546, 'Vancouver', 'Cardiology', 2, '2012/27/04', '13:00');
+insert into is_on values (320874981, 'Vancouver', 'Cardiology', 3, '2015/13/11', '13:45');
+insert into is_on values (160839453, 'Vancouver', 'Oncology', 1, '2012/19/12', '20:00');
+insert into is_on values (322654189, 'Vancouver', 'Oncology', 2, '2013/06/13', '11:30');
+insert into is_on values (351565322, 'Vancouver', 'Oncology', 3,'2014/28/07' , '17:00');
+insert into is_on values (115987938, 'Edmonton', 'Cardiology', 1, '2013/14/11', '18:30');
+insert into is_on values (556784565, 'Winnipeg', 'Radiology', 1, '2015/19/03', '15:00');
+insert into is_on values (578875478, 'Ottawa', 'Podiatry', 1, '2013/01/02', '15:00');
+insert into is_on values (578875478, 'Winnipeg', 'Podiatry', 2, '2015/08/10', '13:00');
+insert into is_on values (574489456, 'Vancouver', 'Podiatry', 1, '2013/19/01', '09:00');
+insert into is_on values (573284895, 'Winnipeg', 'Podiatry', 1, '2015/23/08', '11:30');
+insert into is_on values (301221823, 'Regina', 'Surgery', 1, '2014/23/09', '20:00');
+insert into is_on values (462156489, 'Victoria', 'Oncology', 1, '2015/27/03', '13:00');
+insert into is_on values (301221823, 'Regina', 'Cardiology', 1, '2012/30/11', '13:45');
+insert into is_on values (462156489, 'Victoria', 'Surgery', 1, '2014/04/06', '09:00');
+insert into is_on values (567354612, 'Montreal', 'Surgery', 1, '2015/13/08', '18:30');
+insert into is_on values (199354543, 'Montreal', 'Radiology', 1, '2015/15/01', '13:00');
+insert into is_on values (451519864, 'Ottawa', 'Surgery', 1, '2014/19/07', '17:00');
 
 insert into has_appointment values (160839453,242518,'2016/23/11','13:00');
 insert into has_appointment values (199354543,242518,'2016/25/12','15:00');
@@ -210,7 +229,6 @@ insert into has_appointment values (567354612,242518,'2016/04/11','18:30');
 insert into has_appointment values (322654189,242518,'2017/21/02','13:45');
 insert into has_appointment values (552455318,242518,'2017/15/07','20:00');
 insert into has_appointment values (552455318,141582,'2017/15/07','20:00');
-
 
 insert into waitlist values('Vancouver', 'Cardiology');
 insert into waitlist values('Vancouver', 'Oncology');
