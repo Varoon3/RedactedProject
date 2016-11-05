@@ -23,17 +23,17 @@ drop table patient_registered cascade constraints;
 
 -- Now we create the tables again
 create table health_care_provider(
-	hid number(9,0) primary key,
+	hid number(6,0) primary key,
 	name varchar2(30),
 	location varchar2(100)
 	);
 create table family_physician(
-    hid number(9,0) primary key,
+    hid number(6,0) primary key,
     foreign key(hid) references health_care_provider
         ON DELETE cascade
     );
 create table specialist(
-    hid number(9,0) primary key,
+    hid number(6,0) primary key,
     speciality varchar2(20),
     availability integer,
     foreign key(hid) references health_care_provider
@@ -43,12 +43,12 @@ create table patient_registered(
     carecardNum number(9,0) primary key,
     name varchar2(30),
     location varchar2(100),
-    hid number(9,0),
+    hid number(6,0),
     foreign key(hid) references family_physician(hid)
          ON DELETE SET NULL
     );
 create table health_care_record(
-    carecardNum number(9,0),
+    carecardNum number(6,0),
     rid integer,
     age integer,
     ethnicity varchar2(30),
@@ -60,7 +60,7 @@ create table health_care_record(
         );
 create table has_appointment(
     carecardNum number(9,0),
-    hid number(9,0),
+    hid number(6,0),
     dateAppointment varchar2(30),
     timeAppointment varchar2(30),
     primary key(carecardNum, hid),
@@ -102,7 +102,7 @@ create table takes(
         ON DELETE cascade
         );
 create table prescribes(
-    hid number(9,0),
+    hid number(6,0),
     medName varchar2(30),
     dose integer,
     primary key(hid, medName, dose),
@@ -140,6 +140,7 @@ insert into family_physician values (486512);
 insert into family_physician values (619023); 
 insert into family_physician values (489221); 
 insert into family_physician values (548977);
+insert into family_physician values (811564);
 
 insert into specialist values (141582,'Cardiology',10);
 insert into specialist values (356187,'Oncology',12);
@@ -153,26 +154,26 @@ insert into specialist values (163784,'Surgery',1);
 insert into patient_registered values(160839453,'Charles Harris','Vancouver',242518 );
 insert into patient_registered values(199354543,'Susan Martin','Montreal', 254099);
 insert into patient_registered values(112348546,'Joseph Thompson','Vancouver',242518);
-insert into patient_registered values(115987938,'Christopher Garcia','Edmonton',356187);
+insert into patient_registered values(115987938,'Christopher Garcia','Edmonton',489456);
 insert into patient_registered values(132977562,'Angela Martinez','Victoria',486512);
-insert into patient_registered values(269734834,'Thomas Robinson','Toronto',287321);
+insert into patient_registered values(269734834,'Thomas Robinson','Toronto',248965);
 insert into patient_registered values(280158572,'Margaret Clark','Toronto',248965);
 insert into patient_registered values(301221823,'Juan Rodriguez','Regina',548977);
 insert into patient_registered values(318548912,'Dorthy Lewis','Montreal',254099);
-insert into patient_registered values(320874981,'Daniel Lee','Vancouver',141582);
-insert into patient_registered values(322654189,'Lisa Walker','Vancouver',141582);
+insert into patient_registered values(320874981,'Daniel Lee','Vancouver',811564);
+insert into patient_registered values(322654189,'Lisa Walker','Vancouver',811564);
 insert into patient_registered values(348121549,'Paul Hall','Winnipeg',548977);
 insert into patient_registered values(351565322,'Nancy Allen','Vancouver',811564);
 insert into patient_registered values(451519864,'Mark Young','Ottawa',619023);
-insert into patient_registered values(455798411,'Luis Hernandez','Edmonton',356187);
-insert into patient_registered values(462156489,'Donald King','Victoria',487552);
-insert into patient_registered values(550156548,'George Wright','Toronto',159542);
+insert into patient_registered values(455798411,'Luis Hernandez','Edmonton',489456);
+insert into patient_registered values(462156489,'Donald King','Victoria',486512);
+insert into patient_registered values(550156548,'George Wright','Toronto',248965);
 insert into patient_registered values(552455318,'Ana Lopez','Edmonton',489456);
 insert into patient_registered values(556784565,'Kenneth Hill','Winnipeg',548977);
 insert into patient_registered values(567354612,'Karen Scott','Montreal',911564);
 insert into patient_registered values(573284895,'Steven Green','Winnipeg',548977);
 insert into patient_registered values(574489456,'Betty Adams','Vancouver',811564);
-insert into patient_registered values(578875478,'Edward Baker','Ottawa',334051);
+insert into patient_registered values(578875478,'Edward Baker','Ottawa',619023);
 
 insert into health_care_record values(160839453, 1, 80, 'Caucasian', 'Great West','ATAGCAAGACCCTGCCTCTCTATTGATGTCACGGCGAATGTCGGGGAGACAGCAGCGGCTGCAGACATCAGATCGGAGTAATACTAACGTGGGATAACTCCGTAACTGACTACGGCCTTCTCTAGACTTTACTTGACCAGATACGCTGTCTTTGGCACGTGGATGGTTTAGAGGAATCACATCCAAGACTGGCTAAGCACGAAGCAACTCTTGAGTGTAAAATTGTTGTCTCCTGTATTCGGGATGCGGG');
 insert into health_care_record values(199354543, 2, 76, 'Hispanic',, 'Great West' 'TACTAGATGACTGCAGGGACTCCGACGTTAAGTACATTACCCCGTCATAGGCGCCGTTCAGGATCACGTTACCGCCATAAGATGGGAGCATGACTTCTTCTCCGCTGCGCCCACGCCAGTAGTGATTACTCCTATAACCCTTCTGAGAGTCCGGAGGCGGAAATCCGCCACGAATGAGAATGTATTTCCCCGACAATCATTATGGGGCGCTCCTAAGCTTTTCCACTCGGTTGAGCCGGCTAGGCCTCTC');
@@ -297,16 +298,16 @@ insert into takes values (462156489, 'Morpine', 120);
 insert into takes values (160839453, 'Statin', 120);
 insert into takes values (322654189, 'Abraxane', 120);
 
-insert into prescribe values (159542, 'Morpine', 80);
-insert into prescribe values (141582, 'Statin', 80);
-insert into prescribe values (356187, 'Abraxane', 80);
-insert into prescribe values (287321, 'luliconazole', 80);
-insert into prescribe values (487552, 'Gravol', 80);
-insert into prescribe values (159542, 'Morpine', 100);
-insert into prescribe values (472122, 'Statin', 100);
-insert into prescribe values (356187, 'Abraxane', 100);
-insert into prescribe values (487552, 'Gravol', 100);
-insert into prescribe values (163784, 'Morpine', 120);
-insert into prescribe values (141582, 'Statin', 120);
-insert into prescribe values (356187, 'Abraxane', 120);
-insert into prescribe values (287321, 'luliconazole', 120);
+insert into prescribes values (159542, 'Morpine', 80);
+insert into prescribes values (141582, 'Statin', 80);
+insert into prescribes values (356187, 'Abraxane', 80);
+insert into prescribes values (287321, 'luliconazole', 80);
+insert into prescribes values (487552, 'Gravol', 80);
+insert into prescribes values (159542, 'Morpine', 100);
+insert into prescribes values (472122, 'Statin', 100);
+insert into prescribes values (356187, 'Abraxane', 100);
+insert into prescribes values (487552, 'Gravol', 100);
+insert into prescribes values (163784, 'Morpine', 120);
+insert into prescribes values (141582, 'Statin', 120);
+insert into prescribes values (356187, 'Abraxane', 120);
+insert into prescribes values (287321, 'luliconazole', 120);
