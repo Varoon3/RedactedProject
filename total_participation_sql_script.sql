@@ -275,7 +275,7 @@ insert into has_appointment values (552455318,141582,'2017/15/07','20:00');
 
 
 insert into medication values ('Morpine', 80);
-insert into medication values ('Statin', 80);
+insert into medication values ('Statin', 60);
 insert into medication values ('Abraxane', 80);
 insert into medication values ('luliconazole', 80);
 insert into medication values ('Gravol', 80);
@@ -286,12 +286,12 @@ insert into medication values ('luliconazole', 100);
 insert into medication values ('Gravol', 100);
 insert into medication values ('Morpine', 120);
 insert into medication values ('Statin', 120);
-insert into medication values ('Abraxane', 120);
+insert into medication values ('Abraxane', 140);
 insert into medication values ('luliconazole', 120);
 insert into medication values ('Gravol', 120);
 
 insert into takes values (567354612, 'Morpine', 80);
-insert into takes values (320874981, 'Statin', 80);
+insert into takes values (320874981, 'Statin', 60);
 insert into takes values (351565322, 'Abraxane', 80);
 insert into takes values (578875478, 'luliconazole', 80);
 insert into takes values (301221823, 'Statin', 100);
@@ -299,10 +299,10 @@ insert into takes values (160839453, 'Abraxane', 100);
 insert into takes values (556784565, 'Gravol', 100);
 insert into takes values (462156489, 'Morpine', 120);
 insert into takes values (160839453, 'Statin', 120);
-insert into takes values (322654189, 'Abraxane', 120);
+insert into takes values (322654189, 'Abraxane', 140);
 
 insert into prescribes values (159542, 'Morpine', 80);
-insert into prescribes values (141582, 'Statin', 80);
+insert into prescribes values (141582, 'Statin', 60);
 insert into prescribes values (356187, 'Abraxane', 80);
 insert into prescribes values (287321, 'luliconazole', 80);
 insert into prescribes values (487552, 'Gravol', 80);
@@ -312,5 +312,5 @@ insert into prescribes values (356187, 'Abraxane', 100);
 insert into prescribes values (487552, 'Gravol', 100);
 insert into prescribes values (163784, 'Morpine', 120);
 insert into prescribes values (141582, 'Statin', 120);
-insert into prescribes values (356187, 'Abraxane', 120);
+insert into prescribes values (356187, 'Abraxane', 140);
 insert into prescribes values (287321, 'luliconazole', 120);
