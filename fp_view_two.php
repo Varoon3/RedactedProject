@@ -246,7 +246,7 @@ function printGeneticHistory($gh){
 var count = div.textContent;
 
 
-
+for(var i=0;i<count;i++){
 $("#try0").mouseover(function() {
     $("#des0").show();
 }).mouseout(function() {
@@ -257,6 +257,7 @@ $("#try1").mouseover(function() {
 }).mouseout(function() {
     $("#des1").hide();
 });
+}
 
 
 </script>
