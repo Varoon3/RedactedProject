@@ -76,15 +76,15 @@ create table waitlist(
     );
 create table is_on(
     carecardNum number(9,0),
-    speciality varchar2(20),
     region varchar2(20),
+    speciality varchar2(20),
     patientPriorityNum integer,
     timeOfEntry varchar2(30),
     dateOfEntry varchar2(30),
-    primary key(carecardNum, speciality, region),
+    primary key(carecardNum, region, speciality),
     foreign key(carecardNum) references patient_registered
         ON DELETE cascade,
-    foreign key(speciality, region) references waitlist
+    foreign key(region, speciality) references waitlist
         );
 create table medication(
     medName varchar2(30),
@@ -151,7 +151,7 @@ insert into specialist values (334051,'Oncology',0);
 insert into specialist values (472122,'Cardiology',8);
 insert into specialist values (163784,'Surgery',1);
 
-insert into patient_registered values(160839453,'Charles Harris','Vancouver',242518 );
+insert into patient_registered values(160839453,'Charles Harris','Vancouver', 242518);
 insert into patient_registered values(199354543,'Susan Martin','Montreal', 254099);
 insert into patient_registered values(112348546,'Joseph Thompson','Vancouver',242518);
 insert into patient_registered values(115987938,'Christopher Garcia','Edmonton',489456);
