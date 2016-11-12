@@ -300,6 +300,11 @@ insert into takes values (556784565, 'Gravol', 100);
 insert into takes values (462156489, 'Morpine', 120);
 insert into takes values (160839453, 'Statin', 120);
 insert into takes values (322654189, 'Abraxane', 140);
+insert into takes values (451519864, 'Morpine', 80);
+insert into takes values (451519864, 'Statin', 60);
+insert into takes values (451519864, 'Abraxane', 80);
+insert into takes values (451519864, 'luliconazole', 80);
+insert into takes values (451519864, 'Gravol', 80);
 
 insert into prescribes values (159542, 'Morpine', 80);
 insert into prescribes values (141582, 'Statin', 60);
@@ -314,3 +319,6 @@ insert into prescribes values (163784, 'Morpine', 120);
 insert into prescribes values (141582, 'Statin', 120);
 insert into prescribes values (356187, 'Abraxane', 140);
 insert into prescribes values (287321, 'luliconazole', 120);
+
+
+
