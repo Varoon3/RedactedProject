@@ -71,7 +71,7 @@ position:absolute;
     display:none;
     border:1px solid #000;
     width:555px;
-    height:275px;
+    height:300px;
 }
 
 .title{
@@ -123,7 +123,12 @@ $success = true;
 
 
 if($db_conn){
-
+	if(array_key_exists('delete',$_POST)){
+		$id = $_GET["carecardNum"];
+		$result = executePlainSQL("DELETE FROM patient_registered WHERE carecardNum=$id");
+		header("Location:fp_view_two.php?tbl=family_physician");
+		OCICommit($db_conn);
+	}
 	$result = executePlainSQL("select carecardNum, name, location from patient_registered where hid = $id order by carecardNum");
 	$resultAfter = executePlainSQL("select carecardNum, name, location from patient_registered where hid = $id order by carecardNum");
 
@@ -171,15 +176,17 @@ function printAllMyPatients($result){
 	$arr = array();
 	echo "<table>";
 	echo "<thead>";    
-	echo "<tr><th>Care Card Number</th><th>Name</th><th>Location</th></tr></thead>";  
+	echo "<tr><th>Care Card Number</th><th>Name</th><th>Location</th><th>Operations</th></tr></thead>";  
 	echo "<tbody>";
+	
 	$count = 0;
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
-		echo "<tr id=\"try" .$count. "\" class=\"trying\"><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["LOCATION"] . "</td></tr>";
+		echo "<tr id=\"patient" .$count. "\" class=\"trying\"><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["LOCATION"] . "</td><td><form method=\"POST\" action=\"update.php?carecardNum=" .$row["CARECARDNUM"]. "\"><input type=\"submit\" id=\"update" .$count. "\" value=\"Update\" name=\"update\" ></form><form method=\"POST\" action=\"fp_view_two.php?tbl=family_physician&carecardNum=" .$row["CARECARDNUM"]. "\"><input type=\"submit\" id=\"delete" .$count. "\" value=\"Delete Patient\" name=\"delete\" ></form></td></tr>";
 		$arr[$count] = $row["CARECARDNUM"];
 		$count++;		
 	}
-		sendCountToJs($count);
+	sendCountToJs($count);
+	
     echo "</tbody>";
     echo "</table>";	
 	makeHCRBox($arr);
@@ -189,9 +196,11 @@ function printAllMyPatients($result){
 
 function makeHCRBox($arr){
 	for($i=0;$i<count($arr);$i++){
-		$resultQuery = executePlainSQL("select p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.genetichistory, h.insurance from health_care_record h, patient_registered p where h.carecardnum=p.carecardNum and p.carecardnum=$arr[$i]");
+		$resultQuery = executePlainSQL("select p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory from health_care_record h, patient_registered p where h.carecardnum=p.carecardNum and p.carecardnum=$arr[$i]");
 		printHCR($resultQuery,$i);
 	}
+	
+	
 }
 	
 	
@@ -209,6 +218,8 @@ echo "<div id=\"des" .$count. "\" class = \"description\" >";
 		echo "Age: " .$row["AGE"]. "";
 		echo "<br>";
 		echo "Ethnicity: " .$row["ETHNICITY"]. "";
+		echo "<br>";
+		echo "Insurance: " .$row["INSURANCE"]. "";
 		echo "<br>";
 		echo "Genetic History: " .printGeneticHistory($row["GENETICHISTORY"]). "";
 		echo "<br>";
@@ -242,22 +253,20 @@ function printGeneticHistory($gh){
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 
- var div = document.getElementById("dom-target");
+var div = document.getElementById("dom-target");
 var count = div.textContent;
-
-
-for(var i=0;i<count;i++){
-$("#try0").mouseover(function() {
-    $("#des0").show();
+for(let i=0;i<count;i++){
+    //alert(i);
+$('#patient'+i).mouseover(function() {
+    $('#des' +i).show();
 }).mouseout(function() {
-    $("#des0").hide();
-});
-$("#try1").mouseover(function() {
-    $("#des1").show();
-}).mouseout(function() {
-    $("#des1").hide();
+    $('#des' +i).hide();
 });
 }
+
+
+
+
 
 
 </script>
