@@ -112,6 +112,30 @@ create table prescribes(
         ON DELETE cascade
         );
 
+create table login_physician(
+    id number(6,0),
+    pass number(4,0),
+    primary key(id),
+    foreign key(id) references family_physician
+        ON DELETE cascade
+        );
+
+create table login_specialist(
+    id number(6,0),
+    pass number(4,0),
+    primary key(id),
+    foreign key(id) references specialist
+        ON DELETE cascade
+        );
+
+create table login_patient(
+    id number(9,0),
+    pass number(4,0),
+    primary key(id),
+    foreign key(id) references patient_registered
+        ON DELETE cascade
+        );
+
 insert into health_care_provider values (242518,'James Smith','Vancouver'); 
 insert into health_care_provider values (141582,'Mary Johnson','Vancouver');
 insert into health_care_provider values (811564,'John Williams','Vancouver'); 
@@ -320,5 +344,46 @@ insert into prescribes values (141582, 'Statin', 120);
 insert into prescribes values (356187, 'Abraxane', 140);
 insert into prescribes values (287321, 'luliconazole', 120);
 
+insert into login_physician values (242518, 1234); 
+insert into login_physician values (911564, 1234); 
+insert into login_physician values (254099, 1234); 
+insert into login_physician values (489456, 1234); 
+insert into login_physician values (248965, 1234); 
+insert into login_physician values (486512, 1234); 
+insert into login_physician values (619023, 1234); 
+insert into login_physician values (489221, 1234); 
+insert into login_physician values (548977, 1234);
+insert into login_physician values (811564, 1234);
 
+insert into login_specialist values (141582, 1234);
+insert into login_specialist values (356187, 1234);
+insert into login_specialist values (287321, 1234);
+insert into login_specialist values (159542, 1234);
+insert into login_specialist values (487552, 1234);
+insert into login_specialist values (334051, 1234);
+insert into login_specialist values (472122, 1234);
+insert into login_specialist values (163784, 1234);
 
+insert into login_patient values(160839453, 1234);
+insert into login_patient values(199354543, 1234);
+insert into login_patient values(112348546, 1234);
+insert into login_patient values(115987938, 1234);
+insert into login_patient values(132977562, 1234);
+insert into login_patient values(269734834, 1234);
+insert into login_patient values(280158572, 1234);
+insert into login_patient values(301221823, 1234);
+insert into login_patient values(318548912, 1234);
+insert into login_patient values(320874981, 1234);
+insert into login_patient values(322654189, 1234);
+insert into login_patient values(348121549, 1234);
+insert into login_patient values(351565322, 1234);
+insert into login_patient values(451519864, 1234);
+insert into login_patient values(455798411, 1234);
+insert into login_patient values(462156489, 1234);
+insert into login_patient values(550156548, 1234);
+insert into login_patient values(552455318, 1234);
+insert into login_patient values(556784565, 1234);
+insert into login_patient values(567354612, 1234);
+insert into login_patient values(573284895, 1234);
+insert into login_patient values(574489456, 1234);
+insert into login_patient values(578875478, 1234);
