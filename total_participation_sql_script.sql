@@ -19,6 +19,9 @@ drop table takes cascade constraints;
 drop table prescribes cascade constraints;
 drop table health_care_provider cascade constraints;
 drop table patient_registered cascade constraints;
+drop table login_physician cascade constraints;
+drop table login_specialist cascade constraints;
+drop table login_patient cascade constraints;
 
 
 -- Now we create the tables again
