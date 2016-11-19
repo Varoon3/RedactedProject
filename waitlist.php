@@ -43,10 +43,13 @@ ul {
 
 <hr>
 <?php
+
+
+
 echo "<ul>";
 echo "<li class = \"item\"><a href=\"index.php?tbl=family_physician\">My Appointments</a></li>";
 	
-	echo "<li class = \"item\"><a href=\"fp_view_two.php?tbl=" .$_GET["tbl"]. "\">My Patients</a></li>";
+	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
@@ -55,35 +58,80 @@ echo "<li class = \"item\"><a href=\"index.php?tbl=family_physician\">My Appoint
 echo "<li class = \"item\" id = \"logout\"><a href=\"homepage.php\">Log Out</a></li>";
 echo "</ul>";
 
-createForm();
-
-$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+if($_COOKIE['tbl'] == "family_physician")
+	createFormPhysician();
+else
+	$_POST['view'] = true;
+echo "</br>";
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
-echo "000000000000000000000";
-	if(isset($_POST['add'])){
-		echo "llllll";
-		$id = $_POST['carecard'];
-		$region = $_GET['region'];
-		$speciality = $_GET['speciality'];
-		echo $id;
-		$result = executePlainSQL("insert into is_on values ($id,'$region', '$speciality', 1 ,'date of today', 'time right now')");
-		echo "33333333333333333";
+	if(isset($_POST['modify'])){
+		if($_COOKIE['tbl'] == "family_physician"){
+			$id = $_POST['carecard'];
+			$priority = $_POST['priority'];
+			$region = $_COOKIE['region'];
+			$speciality = $_COOKIE['speciality'];
+			date_default_timezone_set("America/Vancouver");
+			$date = date("Y/d/m");
+			$time = date("H:i");
+			$result1 = executePlainSQL("UPDATE is_on SET patientPriorityNum = patientPriorityNum + 1 WHERE patientPriorityNum >= $priority AND region = '$region' AND speciality = '$speciality'");
+			$result2 = executePlainSQL("insert into is_on values ($id,'$region', '$speciality', $priority ,'$date', '$time')");
+			echo "<h4>Patient added successfuly to waitlist of " .$speciality. " in " .$region. " <h4>";
+		} else {
+			$region = $_COOKIE['region'];
+			$speciality = $_COOKIE['speciality'];
+			//SQL QUERIES - GETTING THE FIRST PRIORITY PATIENT OFF WAITLIST AND SCHEDULING AN APPOINTMENT WITH HIM/HER
+			$result1 = executePlainSQL("SELECT p.carecardNum, p.name FROM patient_registered p, is_on w WHERE p.carecardNum = w.carecardNum AND w.patientPriorityNum = 1 AND w.region = '$region' AND w.speciality = '$speciality'");
+			$result1After = executePlainSQL("SELECT p.carecardNum, p.name FROM patient_registered p, is_on w WHERE p.carecardNum = w.carecardNum AND w.patientPriorityNum = 1 AND w.region = '$region' AND w.speciality = '$speciality'");
+			//need to validate that there is a person with first priority in this waitlist
+			if(validateResult($result1)){
+				//need to save carecardNum and Name in order to book an appointment on a different page (cookie)
+				saveIdAndName($result1After);
+				$careCardNum = $_COOKIE['carecardNum'];
+				$result2 = executePlainSQL("DELETE FROM is_on WHERE carecardNum = $careCardNum AND region = '$region' AND speciality = '$speciality'");
+				$result3 = executePlainSQL("UPDATE is_on SET patientPriorityNum = patientPriorityNum - 1 WHERE patientPriorityNum >= 1 AND region = '$region' AND speciality = '$speciality'");
+				OCICommit($db_conn);
+				OCILogoff($db_conn);
+			    header("Location:bookAppointment.php");
+			}
+			
+		}
 	}
 	else if(array_key_exists('view',$_POST)){
-	echo "11111111111111111";
-		$speciality = $_POST['speciality'];
-		$region = $_POST['region'];
-		$result = executePlainSQL("select i.carecardNum, p.name, i.patientPriorityNum, i.dateOfEntry, i.timeOfEntry from is_on i, patient_registered p where i.speciality = '$speciality' AND i.region='$region' AND i.careCardNum = 	               p.careCardNum");
-		$resultAfter = executePlainSQL("select i.carecardNum, p.name, i.patientPriorityNum, i.dateOfEntry, i.timeOfEntry from is_on i, patient_registered p where i.speciality = '$speciality' AND i.region='$region' AND i.careCardNum = p.careCardNum");	
-		if(validateResult($result,$resultAfter,$speciality,$region)){
+		if($_COOKIE['tbl'] == "family_physician"){
+			$speciality = $_POST['speciality'];
+			$region = $_POST['region'];
+		}
+		else{
+			$speciality = getSpeciality();
+			$region = getRegion();
+		}
+			
+	
+		
+		setcookie('speciality', $speciality);
+		setcookie('region', $region);
+		$result = executePlainSQL("select i.carecardNum, p.name, i.patientPriorityNum, i.dateOfEntry, i.timeOfEntry from is_on i, patient_registered p where i.speciality = '$speciality' AND i.region='$region' AND i.careCardNum = p.careCardNum ORDER BY patientPriorityNum");
+		$resultAfter = executePlainSQL("select i.carecardNum, p.name, i.patientPriorityNum, i.dateOfEntry, i.timeOfEntry from is_on i, patient_registered p where i.speciality = '$speciality' AND i.region='$region' AND i.careCardNum = p.careCardNum ORDER BY patientPriorityNum");	
+		echo "</br>";
+		printWaitlist($resultAfter, $speciality, $region);
+		if($_COOKIE['tbl'] == "family_physician") {
 			echo "<h4> Add patient </h4>";
 			echo "<form method = \"POST\" action=\"waitlist.php\">";
 			echo "Care Card Number: <input type=\"text\" name=\"carecard\">";
-			echo "<input type=\"submit\" value=\"add\" name=\"add\" >";
+			echo "</br>";
+			echo "Priority Number: <input type=\"text\" name=\"priority\">";
+			echo "</br>";
+			echo "<input type=\"submit\" value=\"add\" name=\"modify\" >";
 			echo "</form>";
-			echo "ehlplppppp|";
+		}else{
+			echo "<h4> Remove patient </h4>";
+			echo "<form method = \"POST\" action=\"waitlist.php\">";
+			echo "<input type=\"submit\" value=\"Book an appointment\" name=\"modify\" >";
+			echo "</form>";
 		}
+		
 		
 	}
 	OCICommit($db_conn);
@@ -94,7 +142,7 @@ else {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-function createForm(){
+function createFormPhysician(){
 	echo "<h1> waitlist</h1>";
 	echo "<h4> View waitlist </h4>";
 	echo "<form method = \"POST\" action=\"waitlist.php\">";
@@ -158,17 +206,43 @@ function printWaitlist($result, $speciality, $region) { //prints results from a 
 	echo "</table>";
 }
 
-
-function validateResult($result, $resultNext, $speciality, $region) { //Checks if the Query is Empty, then sends a copy of the result to print
-	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<br>Error: Waitlist doesnt exist!</br>";
+function validateResult($result) { //validates that there is exactly one person with first priority
+	$count = 0;
+	while($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		$count++;
+	}
+	if($count != 1)
 		return false;
-	}
-	else{
-		printWaitlist($resultNext, $speciality, $region);
+	else
 		return true;
-	}
 }
+
+function saveIdAndName($result){
+	$row = OCI_Fetch_Array($result, OCI_BOTH);
+	setcookie('carecardNum', $row['CARECARDNUM']);
+	setcookie('name', $row['NAME']);
+	
+
+}
+
+function getSpeciality(){
+	$id = $_COOKIE['id'];
+	$result = executePlainSQL("select speciality from specialist where hid=$id");
+	$row = OCI_Fetch_Array($result, OCI_BOTH);
+	return $row[0];
+}
+
+function getRegion(){
+	$id = $_COOKIE['id'];
+	$result = executePlainSQL("select location from health_care_provider where hid=$id");
+	$row = OCI_Fetch_Array($result, OCI_BOTH);
+    return $row[0];
+	
+	
+}
+
+
+
   
 ?>
 

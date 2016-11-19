@@ -46,59 +46,32 @@ ul {
 
 echo "<ul>";
 echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
-
-if($_COOKIE["tbl"] == "patient_registered"){
-    $tbl = "patient_registered";
-	$field = "carecardNum";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
-}
-
-
-else{
-	$tbl = "Health_Care_Provider";
-	$field = "hid";
 	
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	
-}
+
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
 
+
 $db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
-	$id = $_COOKIE["id"];
-
-	$result = executePlainSQL("select NAME from $tbl where $field = $id");
-	if($tbl == "Health_Care_Provider")
-		echo "<p> Hello Dr. ";
-	else
-		echo "<p> Hello ";
-	printWelcome($result);
-	echo "</p>";
-	
-	//want to present list of patients if provider
-	if($tbl == "Health_Care_Provider"){
-		$appointments = executePlainSQL("select h.carecardNum, p.name, h.dateAppointment, h.timeAppointment from patient_registered p, has_appointment h where h.carecardNum = p.carecardNum AND h.hid = $id order by h.dateAppointment, h.timeAppointment");
-		$appointmentsAfter = executePlainSQL("select h.carecardNum, p.name, h.dateAppointment, h.timeAppointment from patient_registered p, has_appointment h where h.carecardNum = p.carecardNum AND h.hid = $id order by h.dateAppointment, h.timeAppointment");
-		if(validateResult($appointments))
-			printAppointments($appointmentsAfter);
-		else
-			echo "You have no upcoming appointments";
-	}
-	else{
-		$myAppointments = executePlainSQL("select r.name, h.dateAppointment, h.timeAppointment, r.location from has_appointment h, Health_Care_Provider r where h.carecardNum = $id AND r.hid = h.hid order by h.dateAppointment, h.timeAppointment");
-		$myAppointmentsAfter = executePlainSQL("select r.name, h.dateAppointment, h.timeAppointment, r.location from has_appointment h, Health_Care_Provider r where h.carecardNum = $id AND r.hid = h.hid order by h.dateAppointment, h.timeAppointment");
-		if(validateResult($myAppointments))
-			printMyAppointments($myAppointmentsAfter);
-	}
-	
+	$carecard = $_COOKIE['carecardNum'];
+	$name = $_COOKIE['name'];
+	$hid = $_COOKIE['id'];
+	//generating random date
+	date_default_timezone_set("America/Vancouver");
+	$date = randomDate(date("Y/d/m"));
+	$time = date("H:i");
+	$result = executePlainSQL("INSERT INTO has_appointment values ($carecard,$hid,'$date','$time')");
+	echo "<h4> Appointment with $name was booked for $date at $time </h4>";
+	echo "<h4> We will add this appointment to your list of appointments. </h4>";
 	OCICommit($db_conn);
 	
 OCILogoff($db_conn);
@@ -108,6 +81,9 @@ else {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
+
+
+
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
@@ -159,6 +135,18 @@ function validateResult($result) { //prints results from a select statement
 			return false;
 	}
 	return true;
+}
+function randomDate($start_date)
+{
+    //lower bound, unix time for today's date
+    $min = 1480627247;
+    $max = $min + 15000000;
+
+    // Generate random number using above bounds
+    $val = rand($min, $max);
+
+    // Convert back to desired date format
+    return date('Y/d/m', $val);
 }
   
 ?>

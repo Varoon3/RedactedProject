@@ -90,45 +90,34 @@ position:absolute;
 
 <?php
 echo "<ul>";
-echo "<li class = \"item\"><a href=\"index.php?tbl=" .$_GET["tbl"]. "\">My Appointments</a></li>";
+echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 
-if($_GET["tbl"] == "family_physician"){
-	$id = 242518;
+
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 
-	echo "<li class = \"item\"><a href=\"patients.php?tbl=" .$_GET["tbl"]. "\">My Patients</a></li>";
-	echo "<li class = \"item\"><a href=\"fp_view_one.php?tbl=" .$_GET["tbl"]. "\">Grab Health Care Record</a></li>";
+	echo "<li class = \"item\"><a href=\"patients.php\">My Patients</a></li>";
  	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
  	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
  	echo "<li class = \"item\"><a href=\"homepage.php\">Waitlist</a></li>";
-}
-else{ //Must be a Specialist
-	$id = 141582;
-	$tbl = "Health_Care_Provider";
-	$field = "hid";
 
-    echo "<li class = \"item\"><a href=\"patients.php?tbl=" .$_GET["tbl"]. "\">My Patients</a></li>";
- 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
- 	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
- 	echo "<li class = \"item\"><a href=\"homepage.php\">Waitlist</a></li>";
-}
 	
-	
-echo "<li class = \"item\" id = \"logout\"><a href=\"homepage.php\">Log Out</a></li>";
+echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 
 
 if($db_conn){
 	if(array_key_exists('delete',$_POST)){
 		$id = $_GET["carecardNum"];
-		$result = executePlainSQL("DELETE FROM patient_registered WHERE carecardNum=$id");
-		header("Location:fp_view_two.php?tbl=family_physician");
+		//need to change that, this will remove a patient from the database completely
+		$result = executePlainSQL("Update patient_registered SET hid = NULL WHERE carecardNum=$id");
+		header("Location:fp_view_two.php");
 		OCICommit($db_conn);
 	}
+	$id = $_COOKIE["id"];
 	$result = executePlainSQL("select carecardNum, name, location from patient_registered where hid = $id order by carecardNum");
 	$resultAfter = executePlainSQL("select carecardNum, name, location from patient_registered where hid = $id order by carecardNum");
 

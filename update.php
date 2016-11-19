@@ -64,21 +64,18 @@ echo "<li class = \"item\" id = \"logout\"><a href=\"homepage.php\">Log Out</a><
 echo "</ul>";
 
 
-$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	$id = $_GET["carecardNum"];
 	$result = executePlainSQL("select * from health_care_record where carecardnum = $id");
 	$resultAfter = executePlainSQL("select * from health_care_record where carecardnum = $id");
 	validateResult($result, $resultAfter);
-	echo "meh";
-	//this if below will always return true before i even pressed update
-	if(isset($_POST['update'])){
-	echo "WHAT THE FUCK";
-			$insurance = $_POST['ins'];
-			$result = executePlainSQL("UPDATE health_care_record SET insurance='$insurance' WHERE carecardNum=$id");
-			echo "Updated Health Care Record Successfully!";
-		}
+	if(array_key_exists('update_2',$_POST)){
+		$insurance = $_POST['ins'];
+		$result = executePlainSQL("UPDATE health_care_record SET insurance='$insurance' WHERE carecardNum=$id");
+		echo "Updated Health Care Record Successfully!";
+	}
 	//want to present list of patients if provider
 
 	OCICommit($db_conn);
@@ -140,7 +137,7 @@ function printHCR($result) { //prints results from a select statement
 		echo "<br>";
 		echo "Genetic History: <input class=\"fixed\" type=\"text\" value=\"" .$row["GENETICHISTORY"]. "\" disabled>";
 		echo "<br>";
-		echo "<input type=\"submit\" value=\"Update\" name=\"update\" >";
+		echo "<input type=\"submit\" value=\"Update\" name=\"update_2\" >";
 		echo "</form>";
 		//echo "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["RID"] . "</td><td>" . $row["AGE"] . "</td><td>" . $row["ETHNICITY"] . "</td><td>" . $row["INSURANCE"] . "</td><td>" . $row["GENETICHISTORY"] . "</td></tr>"; //or just use "echo $row[0]" 
 		//bug here

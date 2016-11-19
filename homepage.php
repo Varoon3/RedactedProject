@@ -3,25 +3,25 @@
 <p>Login</p>
 <form method="POST" action="homepage.php">
 <td>
-   Username: <input type="text" value="" name="username"><br>
+   ID: <input type="text" value="" name="id"><br>
    Password: <input type="password" value="" name="password">
    </td>
 <p><input type="submit" value="Log in" name="log_in" ></p>
 </form>
 <?php
-	$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+	$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
 		executePlainSQL("Drop table log_In_Tbl");
-		executePlainSQL("create table log_In_Tbl (username varchar2(30), password varchar2(30), tbl varChar(30))");
-		executePlainSQL("insert into log_In_Tbl values('familyphysician', '1234', 'family_physician')");
-		executePlainSQL("insert into log_In_Tbl values('patient', '1234', 'patient_registered')");
-		executePlainSQL("insert into log_In_Tbl values('specialist', '1234', 'specialist')");
+		executePlainSQL("create table log_In_Tbl (id number, password varchar2(30), tbl varChar(30))");
+		executePlainSQL("insert into log_In_Tbl values(242518, '1234', 'family_physician')");
+		executePlainSQL("insert into log_In_Tbl values(160839453, '1234', 'patient_registered')");
+		executePlainSQL("insert into log_In_Tbl values(141582, '1234', 'specialist')");
 		if(array_key_exists('log_in',$_POST)){
-			$uname = $_POST['username'];
+			$id = $_POST['id'];
 			$pass = $_POST['password'];
-			$result = executePlainSQL("select tbl from log_In_Tbl where username='$uname' AND password='$pass'");
-			validateResult($result);
+			$result = executePlainSQL("select tbl from log_In_Tbl where id=$id AND password='$pass'");
+			validateResult($result,$id);
 			OCICommit($db_conn);
 		}
 	OCILogoff($db_conn);
@@ -53,13 +53,16 @@
 	}
 	return $statement;
 }
-function validateResult($result) { //prints results from a select statement
+function validateResult($result,$id) { //prints results from a select statement
 	//if the result query is empty, so invalid username/password
 	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
 			echo "error";
 	}
 	else{
-		header("Location:index.php?tbl=$row[0]");
+		setcookie('tbl', $row[0]);
+		setcookie('id', $id);
+		//echo "HERE ARE MY VALUES: " . $_COOKIE["tbl"] . "";
+		header("Location:index.php");
 	}
 }
 ?>
