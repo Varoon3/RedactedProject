@@ -299,9 +299,13 @@ insert into has_appointment values (552455318,242518,'2017/15/07','20:00');
 insert into has_appointment values (552455318,141582,'2017/15/07','20:00');
 
 
-
-insert into medication values ('Morpine', 80);
+insert into medication values ('Morpine', 60);
 insert into medication values ('Statin', 60);
+insert into medication values ('Abraxane', 60);
+insert into medication values ('luliconazole', 60);
+insert into medication values ('Gravol', 60);
+insert into medication values ('Morpine', 80);
+insert into medication values ('Statin', 80);
 insert into medication values ('Abraxane', 80);
 insert into medication values ('luliconazole', 80);
 insert into medication values ('Gravol', 80);
@@ -312,9 +316,14 @@ insert into medication values ('luliconazole', 100);
 insert into medication values ('Gravol', 100);
 insert into medication values ('Morpine', 120);
 insert into medication values ('Statin', 120);
-insert into medication values ('Abraxane', 140);
+insert into medication values ('Abraxane', 120);
 insert into medication values ('luliconazole', 120);
 insert into medication values ('Gravol', 120);
+insert into medication values ('Morpine', 140);
+insert into medication values ('Statin', 140);
+insert into medication values ('Abraxane', 140);
+insert into medication values ('luliconazole', 140);
+insert into medication values ('Gravol', 140);
 
 insert into takes values (567354612, 'Morpine', 80);
 insert into takes values (320874981, 'Statin', 60);
