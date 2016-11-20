@@ -50,8 +50,7 @@ echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 if($_COOKIE["tbl"] == "patient_registered") {
     $tbl = "patient_registered";
 	$field = "carecardNum";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
+	echo "<li class = \"item\"><a href=\"record.php\">My HCR</a></li>";
 } else if ($_COOKIE["tbl"] == "family_physician") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
@@ -71,28 +70,25 @@ if($_COOKIE["tbl"] == "patient_registered") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-makePrescribeForm();
-
 $db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
-	$id = $_COOKIE["id"];
-	if(array_key_exists('submit',$_POST)){
-		$carecardNum = $_POST['ccn'];
-		$dose = $_POST['dose'];
-		$medName = $_POST['medName'];
-		$result = executePlainSQL("select name from patient_registered where carecardNum = $carecardNum");
-		$resultAfter = executePlainSQL("select name from patient_registered where carecardNum = $carecardNum");
-		if (validateResult($result)) {
-			$row = OCI_Fetch_Array($resultAfter, OCI_BOTH);
-			$name = $row['NAME'];
-			executePlainSQL("insert into prescribes values ($id, '$medName', $dose)");
-			executePlainSQL("insert into takes values ($carecardNum, '$medName', $dose)");
-			echo "Added perscription: " . $dose . "mg of " . $medName . " for " . $name . "\n";
-		} else {
-			echo "Carecard Number not found, please try again.";
-		}
-	}	
+	$id = $_COOKIE['id'];
+	if(array_key_exists('modify',$_POST)){
+		$hcp = $_POST['hcp'];
+		executePlainSQL("update health_care_record set insurance = '$hcp' where carecardNum = $id");
+		echo "Thank you, your information will be update shortly";
+	} else {
+		makeHCRBox($id);
+		echo "<h4> Insurance changed? </h4>";
+		echo "<form method = \"POST\" action=\"record.php\">";
+		echo "Enter your new provider: <input type=\"text\" name=\"hcp\">";
+		echo "</br>";
+		echo "Enter your plan number: <input type=\"text\" name=\"ignored\">";
+		echo "</br>";
+		echo "<input type=\"submit\" value=\"Update\" name=\"modify\" >";
+		echo "</form>";
+	}
 	
 	OCICommit($db_conn);
 	
@@ -104,30 +100,34 @@ else {
 	echo htmlentities($e['message']);
 }
 
-function makePrescribeForm() {
-	echo "<h4> Make a prescription: </h4>";
-	echo "<form method = \"POST\" action=\"prescribe.php\">";
-
-	echo "What are you prescribing?: <select name=\"medName\">
-	  <option value=\"Morpine\">Morpine</option>
-	  <option value=\"Statin\">Statin</option>
-	  <option value=\"Abraxane\">Abraxane</option>
-	  <option value=\"luliconazole\">luliconazole</option>
-	  <option value=\"Gravol\">Gravol</option>
-	</select>";
-	echo "</br>";
-	echo "To whom?: <input type=\"text\" name=\"ccn\">";
-	echo "</br>";
-	echo "How much (mg)?: <select name=\"dose\">
-		  <option value=\"60\">60</option>
-		  <option value=\"80\">80</option>
-		  <option value=\"100\">100</option>
-		  <option value=\"120\">120</option>
-		  <option value=\"140\">140</option>
-		  </select>";
-	echo "</br>";
-    echo "<input type=\"submit\" value=\"submit\" name=\"submit\" >";
-    echo "</form>";
+function makeHCRBox($id){
+	$resultQuery = executePlainSQL("select p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory from health_care_record h, patient_registered p where h.carecardnum=p.carecardNum and p.carecardnum=$id");
+	printHCR($resultQuery);
+	
+	
+}
+	
+	
+function printHCR($result){
+	echo "<div id=\"des\" class = \"description\" >";
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+	    echo "<p class = \"title\">Your Health Care Record:\n</p>";
+		echo "Care Card #: " .$row["CARECARDNUM"]. "";
+		echo "<br>";
+		echo "Location: " .$row["LOCATION"]. "";
+		echo "<br>";
+		echo "Record ID: " .$row["RID"]. "";
+		echo "<br>";
+		echo "Age: " .$row["AGE"]. "";
+		echo "<br>";
+		echo "Ethnicity: " .$row["ETHNICITY"]. "";
+		echo "<br>";
+		echo "Insurance: " .$row["INSURANCE"]. "";
+		echo "<br>";
+		echo "Genetic History: " .printGeneticHistory($row["GENETICHISTORY"]). "";
+		echo "<br>";
+	}
+	echo "</div>";
 }
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -150,6 +150,21 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 	} else {
 	}
 	return $statement;
+}
+
+function printGeneticHistory($gh){
+	$str = "";
+	$strlen = strlen($gh);
+	for($i=0;$i<$strlen;$i++){
+		if($i%50 == 0){
+			$str .= "<br>";
+		}
+		
+		$char = substr( $gh, $i, 1 );
+		$str .= $char;
+		
+	}
+	return $str;
 }
 
 function validateResult($result) { //prints results from a select statement

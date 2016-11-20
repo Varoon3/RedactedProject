@@ -7,7 +7,7 @@
 <p><input type="submit" value="Search" name="search" ></p>
 </form>
 <?php
-$db_conn = OCILogon("ora_d1l0b", "a57303159", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 

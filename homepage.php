@@ -58,9 +58,9 @@ function login($id, $pass) {
 	$patientResult = executePlainSQL("select * from login_patient where id=$id AND pass=$pass");
 	validateResult($patientResult, $id, "patient_registered");
 	$physicianResult = executePlainSQL("select * from login_physician where id=$id AND pass=$pass");
-	validateResult($physicianResult, $id, "Health_Care_Provider");
+	validateResult($physicianResult, $id, "family_physician");
 	$specialistResult = executePlainSQL("select * from login_specialist where id=$id AND pass=$pass");
-	validateResult($specialistResult, $id, "Health_Care_Provider");
+	validateResult($specialistResult, $id, "specialist");
 }
 
 function validateResult($result,$id,$table) { //prints results from a select statement

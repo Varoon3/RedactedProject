@@ -47,15 +47,30 @@ ul {
 
 
 echo "<ul>";
-echo "<li class = \"item\"><a href=\"index.php?tbl=family_physician\">My Appointments</a></li>";
-	
+echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
+
+if($_COOKIE["tbl"] == "patient_registered") {
+    $tbl = "patient_registered";
+	$field = "carecardNum";
+	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
+	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
+} else if ($_COOKIE["tbl"] == "family_physician") {
+	$tbl = "Health_Care_Provider";
+	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+} else {
+	$tbl = "Health_Care_Provider";
+	$field = "hid";
+	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
+	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
+}
 	
-	
-echo "<li class = \"item\" id = \"logout\"><a href=\"homepage.php\">Log Out</a></li>";
+echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
 if($_COOKIE['tbl'] == "family_physician")
@@ -142,7 +157,7 @@ else {
 	echo htmlentities($e['message']);
 }
 function createFormPhysician(){
-	echo "<h1> waitlist</h1>";
+	echo "<h1> Waitlist</h1>";
 	echo "<h4> View waitlist </h4>";
 	echo "<form method = \"POST\" action=\"waitlist.php\">";
 
