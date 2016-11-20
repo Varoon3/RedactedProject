@@ -63,7 +63,7 @@ if($_COOKIE['tbl'] == "family_physician")
 else
 	$_POST['view'] = true;
 echo "</br>";
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	if(isset($_POST['modify'])){
@@ -87,13 +87,12 @@ if($db_conn){
 			//need to validate that there is a person with first priority in this waitlist
 			if(validateResult($result1)){
 				//need to save carecardNum and Name in order to book an appointment on a different page (cookie)
-				saveIdAndName($result1After);
-				$careCardNum = $_COOKIE['carecardNum'];
+				$careCardNum = saveNameReturnId($result1After);
 				$result2 = executePlainSQL("DELETE FROM is_on WHERE carecardNum = $careCardNum AND region = '$region' AND speciality = '$speciality'");
 				$result3 = executePlainSQL("UPDATE is_on SET patientPriorityNum = patientPriorityNum - 1 WHERE patientPriorityNum >= 1 AND region = '$region' AND speciality = '$speciality'");
 				OCICommit($db_conn);
 				OCILogoff($db_conn);
-			    header("Location:bookAppointment.php");
+			    	header("Location:bookAppointment.php");
 			}
 			
 		}
@@ -217,12 +216,12 @@ function validateResult($result) { //validates that there is exactly one person 
 		return true;
 }
 
-function saveIdAndName($result){
+function saveNameReturnId($result){
 	$row = OCI_Fetch_Array($result, OCI_BOTH);
-	setcookie('carecardNum', $row['CARECARDNUM']);
 	setcookie('name', $row['NAME']);
+	setcookie('carecardNum', $row['CARECARDNUM']);
+	return $row['CARECARDNUM'];
 	
-
 }
 
 function getSpeciality(){
