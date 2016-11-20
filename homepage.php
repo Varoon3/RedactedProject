@@ -9,7 +9,7 @@
 <p><input type="submit" value="Log in" name="log_in" ></p>
 </form>
 <?php
-	$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+	$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
 		executePlainSQL("Drop table log_In_Tbl");
@@ -20,8 +20,9 @@
 		if(array_key_exists('log_in',$_POST)){
 			$id = $_POST['id'];
 			$pass = $_POST['password'];
-			$result = executePlainSQL("select tbl from log_In_Tbl where id=$id AND password='$pass'");
-			validateResult($result,$id);
+			login($id, $pass);
+			//$result = executePlainSQL("select tbl from log_In_Tbl where id=$id AND password='$pass'");
+			//validateResult($result,$id);
 			OCICommit($db_conn);
 		}
 	OCILogoff($db_conn);
@@ -53,13 +54,22 @@
 	}
 	return $statement;
 }
-function validateResult($result,$id) { //prints results from a select statement
+function login($id, $pass) {
+	$patientResult = executePlainSQL("select * from login_patient where id=$id AND pass=$pass");
+	validateResult($patientResult, $id, "patient_registered");
+	$physicianResult = executePlainSQL("select * from login_physician where id=$id AND pass=$pass");
+	validateResult($physicianResult, $id, "Health_Care_Provider");
+	$specialistResult = executePlainSQL("select * from login_specialist where id=$id AND pass=$pass");
+	validateResult($specialistResult, $id, "Health_Care_Provider");
+}
+
+function validateResult($result,$id,$table) { //prints results from a select statement
 	//if the result query is empty, so invalid username/password
 	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
 			echo "error";
 	}
 	else{
-		setcookie('tbl', $row[0]);
+		setcookie('tbl', $table);
 		setcookie('id', $id);
 		//echo "HERE ARE MY VALUES: " . $_COOKIE["tbl"] . "";
 		header("Location:index.php");
