@@ -52,20 +52,17 @@ echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 if($_COOKIE["tbl"] == "patient_registered") {
     $tbl = "patient_registered";
 	$field = "carecardNum";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
+	echo "<li class = \"item\"><a href=\"record.php\">My HCR</a></li>";
 } else if ($_COOKIE["tbl"] == "family_physician") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 } else {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
 }

@@ -95,20 +95,17 @@ echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 if($_COOKIE["tbl"] == "patient_registered") {
     $tbl = "patient_registered";
 	$field = "carecardNum";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
+	echo "<li class = \"item\"><a href=\"record.php\">My HCR</a></li>";
 } else if ($_COOKIE["tbl"] == "family_physician") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 } else {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Create Appointment</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
 }
@@ -181,7 +178,12 @@ function printAllMyPatients($result){
 	
 	$count = 0;
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
-		echo "<tr id=\"patient" .$count. "\" class=\"trying\"><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["LOCATION"] . "</td><td><form method=\"POST\" action=\"update.php?carecardNum=" .$row["CARECARDNUM"]. "\"><input type=\"submit\" id=\"update" .$count. "\" value=\"Update\" name=\"update\" ></form><form method=\"POST\" action=\"fp_view_two.php?tbl=family_physician&carecardNum=" .$row["CARECARDNUM"]. "\"><input type=\"submit\" id=\"delete" .$count. "\" value=\"Delete Patient\" name=\"delete\" ></form></td></tr>";
+		echo "<tr id=\"patient" .$count. "\" class=\"trying\"><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["LOCATION"] . 
+			"</td><td><form method=\"POST\" action=\"update.php?carecardNum=" .$row["CARECARDNUM"]. "\"><input type=\"submit\" id=\"update" .$count. 
+			"\" value=\"Update\" name=\"update\" ></form><form method=\"POST\" action=\"fp_view_two.php?tbl=family_physician&carecardNum=" .$row["CARECARDNUM"]. 
+			"\"><input type=\"submit\" id=\"delete" .$count. "\" value=\"Delete Patient\" name=\"delete\" >" . 
+			"</form><form method=\"POST\" action=\"bookAppointment.php\"><input type=\"submit\" id=\"appointment" .$count. "\" value=\"Make Appointment\" name=\"appointment\" ><input type=\"hidden\" name=\"fccn\" value=\"" . $row["CARECARDNUM"] . "\">" . 
+			"<input type=\"hidden\" name=\"fname\" value=\"" . $row["NAME"] . "\"></form></td></tr>";
 		$arr[$count] = $row["CARECARDNUM"];
 		$count++;		
 	}

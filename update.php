@@ -52,8 +52,7 @@ echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 if($_COOKIE["tbl"] == "patient_registered") {
     $tbl = "patient_registered";
 	$field = "carecardNum";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCR</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">My HCP</a></li>";
+	echo "<li class = \"item\"><a href=\"record.php\">My HCR</a></li>";
 } else if ($_COOKIE["tbl"] == "family_physician") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
