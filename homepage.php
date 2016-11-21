@@ -1,15 +1,118 @@
 <html>
-<p>Homepage<hr><br><br>
-<p>Login</p>
-<form method="POST" action="homepage.php">
-<td>
-   ID: <input type="text" value="" name="id"><br>
-   Password: <input type="password" value="" name="password">
-   </td>
-<p><input type="submit" value="Log in" name="log_in" ></p>
-</form>
+<head>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
+.users {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  position: relative;
+  text-align: center;
+  max-width: 360px;
+  z-index: 1;
+}
+
+  .header4 {
+  text-align: left;
+}
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #00cccc;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #0028cc;
+}
+
+
+body {
+  background: #00cccc; /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, #00cccc, #00cccc);
+  background: -moz-linear-gradient(right, #00cccc, #00cccc);
+  background: -o-linear-gradient(right, #00cccc, #00ccccF);
+  background: linear-gradient(to left, #00cccc, #00cccc);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;      
+}
+</style>
+</head>
+<body>
+<div class="login-page">
+  <div class="form">
+   
+    <form class="login-form" method="POST" action="homepage.php">
+      <input type="text" placeholder="ID" name="id"/>
+      <input type="password" placeholder="password" name="password"/>
+      <button name="log_in">login</button>
+    </form>
+  </div>
+</div>
+
+<div class="users">
+  <h4> Sample Users </h4>
+  <p class="header4"> Family Physician View: </p>
+  <p>ID: 242518 </p>
+  <p>Password: 1234 </p>
+  </br>
+  <p class="header4"> Specialist View: </p>
+  <p>ID: 141582 </p>
+  <p>Password: 1234 </p>
+  </br>
+  <p class="header4"> Patient View: </p>
+  <p>ID: 160839453 </p>
+  <p>Password: 1234 </p>
+</div>
 <?php
-	$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
 		executePlainSQL("Drop table log_In_Tbl");
@@ -76,5 +179,5 @@ function validateResult($result,$id,$table) { //prints results from a select sta
 	}
 }
 ?>
-
+</body>
 </html>

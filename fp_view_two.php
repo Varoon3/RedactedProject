@@ -1,6 +1,7 @@
 <html>
  <head>
 <style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 ul {
 	/* list-style-type removes all bullet points from the list*/
 	/* margin and padding removes default browser settings*/
@@ -8,7 +9,8 @@ ul {
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
-	background-color:  #ee3a13  ;
+	background-color: #00cccc ;
+	font-family: "Roboto", sans-serif;
 }
 
 .item{
@@ -36,7 +38,6 @@ ul {
 }
 
 table {
-		font-family: 'Arial';
 		margin: 25px auto;
 		border-collapse: collapse;
 		border: 1px solid #eee;
@@ -72,11 +73,15 @@ position:absolute;
     border:1px solid #000;
     width:555px;
     height:300px;
+	background-color: #00cccc ;
 }
 
 .title{
 	font-weight: bold;
 	text-decoration: underline;
+}
+body{
+	font-family: "Roboto", sans-serif;
 }
 
 
@@ -113,7 +118,7 @@ if($_COOKIE["tbl"] == "patient_registered") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 
 

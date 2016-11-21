@@ -1,6 +1,7 @@
 <html>
  <head>
 <style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 ul {
 	/* list-style-type removes all bullet points from the list*/
 	/* margin and padding removes default browser settings*/
@@ -8,7 +9,8 @@ ul {
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
-	background-color:  #ee3a13  ;
+	background-color: #00cccc ;
+	font-family: "Roboto", sans-serif;
 }
 
 .item{
@@ -28,12 +30,45 @@ ul {
 
 /* when hovering over an item */
 .item a:hover{
-	background-color:  #555;
+	background-color:  #0028cc;
 }
 
 #logout{
 	float:right;
 }
+
+table {
+		margin: 25px auto;
+		border-collapse: collapse;
+		border: 1px solid #eee;
+		border-bottom: 2px solid #00cccc;
+		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
+	}
+	table tr:hover {
+		background: #f4f4f4;
+	}
+	table tr:hover td {
+		color: #555;
+	}
+	table th, table td {
+		color: #999;
+		border: 1px solid #eee;
+		padding: 12px 35px;
+		border-collapse: collapse;
+	}
+	table th {
+		background: #00cccc;
+		color: #fff;
+		text-transform: uppercase;
+		font-size: 12px;
+	}
+	table th.last {
+		border-right: none;
+	}
+	body{
+		font-family: "Roboto", sans-serif;
+	}
+
 </style>
 <body>
 
@@ -69,7 +104,7 @@ if($_COOKIE["tbl"] == "patient_registered") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	$id = $_COOKIE["id"];

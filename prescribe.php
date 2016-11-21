@@ -1,6 +1,7 @@
 <html>
  <head>
 <style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 ul {
 	/* list-style-type removes all bullet points from the list*/
 	/* margin and padding removes default browser settings*/
@@ -8,7 +9,8 @@ ul {
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
-	background-color:  #ee3a13  ;
+	background-color: #00cccc ;
+	font-family: "Roboto", sans-serif;
 }
 
 .item{
@@ -28,11 +30,14 @@ ul {
 
 /* when hovering over an item */
 .item a:hover{
-	background-color:  #555;
+	background-color:  #0028cc;
 }
 
 #logout{
 	float:right;
+}
+body{
+	font-family: "Roboto", sans-serif;
 }
 </style>
 <body>
@@ -43,10 +48,8 @@ ul {
 
 <hr>
 <?php
-
 echo "<ul>";
 echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
-
 if($_COOKIE["tbl"] == "patient_registered") {
     $tbl = "patient_registered";
 	$field = "carecardNum";
@@ -67,10 +70,8 @@ if($_COOKIE["tbl"] == "patient_registered") {
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
-
 makePrescribeForm();
-
-$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	$id = $_COOKIE["id"];
@@ -100,11 +101,9 @@ else {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-
 function makePrescribeForm() {
 	echo "<h4> Make a prescription: </h4>";
 	echo "<form method = \"POST\" action=\"prescribe.php\">";
-
 	echo "What are you prescribing?: <select name=\"medName\">
 	  <option value=\"Morpine\">Morpine</option>
 	  <option value=\"Statin\">Statin</option>
@@ -126,7 +125,6 @@ function makePrescribeForm() {
     echo "<input type=\"submit\" value=\"submit\" name=\"submit\" >";
     echo "</form>";
 }
-
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
@@ -148,7 +146,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 	}
 	return $statement;
 }
-
 function validateResult($result) { //prints results from a select statement
 	//if the result query is empty, so invalid username/password
 	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {

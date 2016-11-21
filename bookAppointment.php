@@ -1,6 +1,7 @@
 <html>
  <head>
 <style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 ul {
 	/* list-style-type removes all bullet points from the list*/
 	/* margin and padding removes default browser settings*/
@@ -8,7 +9,8 @@ ul {
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
-	background-color:  #ee3a13  ;
+	background-color: #00cccc ;
+	font-family: "Roboto", sans-serif;
 }
 
 .item{
@@ -33,6 +35,9 @@ ul {
 
 #logout{
 	float:right;
+}
+body{
+	font-family: "Roboto", sans-serif;
 }
 </style>
 <body>
@@ -70,7 +75,7 @@ echo "</ul>";
 
 
 
-$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	if (isset($_POST['fccn'])) { // From physician form with hidden fields
