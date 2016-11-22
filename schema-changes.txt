@@ -1,0 +1,7 @@
+There were not many changes in the schema from the last part.
+1) We removed availability as a field from Specialist. It wasn't serving any purpose except artificially limiting making appointments, and didn't feel like it made sense.
+2) We removed medicalHistory as a field from Health_Care_Record. Given a health care record essentially is a medical history it's a bit redundant. Also making fake medical histories in any way other than lorem ipsum would have been incredibly tedious.
+3) We simplified storing patient to use a single name field instead of first and last, and instead of storing an address store a location (i.e. city)
+We also added some tables to serve a login function, but wouldn't really consider this part of the schema.
+
+All these changes served to simplify the creating/updating of data, since for the purposes of this project they weren't adding any actual functionality.
