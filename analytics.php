@@ -84,10 +84,12 @@ table {
 				echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 				echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 				echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+				echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
 			} else {
-				echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+				echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 				echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 				echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
+				echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
 			}
 			echo "<li class = \"item\" id = \"logout\"><a href=\"homepage.php\">Log Out</a></li>";
 			echo "</ul>";
