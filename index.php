@@ -91,14 +91,18 @@ if($_COOKIE["tbl"] == "patient_registered") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
+
 } else {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
+
 }
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
@@ -131,6 +135,8 @@ if($db_conn){
 		$myAppointmentsAfter = executePlainSQL("select r.name, h.dateAppointment, h.timeAppointment, r.location from has_appointment h, Health_Care_Provider r where h.carecardNum = $id AND r.hid = h.hid order by h.dateAppointment, h.timeAppointment");
 		if(validateResult($myAppointments))
 			printMyAppointments($myAppointmentsAfter);
+		else
+			echo "You have no upcoming appointments";
 	}
 	
 	OCICommit($db_conn);

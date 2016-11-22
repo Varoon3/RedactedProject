@@ -60,14 +60,16 @@ if($_COOKIE["tbl"] == "patient_registered") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
 } else {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
 }
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
@@ -104,14 +106,15 @@ else {
 }
 
 function makeHCRBox($id){
-	$resultQuery = executePlainSQL("select p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory from health_care_record h, patient_registered p where h.carecardnum=p.carecardNum and p.carecardnum=$id");
-	printHCR($resultQuery);
+	$resultQuery = executePlainSQL("select p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory from health_care_record h, patient_registered p where h.carecardnum=p.carecardNum AND p.carecardnum=$id");
+	$resultPrescription = executePlainSQL("select p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory, t.medName, t.dose from health_care_record h, patient_registered p, takes t where h.carecardnum=p.carecardNum AND p.carecardnum=$id AND h.carecardNum = t.carecardNum");
+	printHCR($resultQuery,$resultPrescription);
 	
 	
 }
 	
 	
-function printHCR($result){
+function printHCR($result,$result2){
 	echo "<div id=\"des\" class = \"description\" >";
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 	    echo "<p class = \"title\">Your Health Care Record:\n</p>";
@@ -130,7 +133,14 @@ function printHCR($result){
 		echo "Genetic History: " .printGeneticHistory($row["GENETICHISTORY"]). "";
 		echo "<br>";
 	}
-	echo "</div>";
+	
+	while ($row = OCI_Fetch_Array($result2, OCI_BOTH)) {
+		echo "Medication Name: " .$row["MEDNAME"]. "";
+		echo "<br>";
+		echo "Dose: " .$row["DOSE"]. "";
+		echo "<br>";
+	}
+echo "</div>";
 }
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it

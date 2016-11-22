@@ -51,21 +51,18 @@ body{
 echo "<ul>";
 echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 if($_COOKIE["tbl"] == "patient_registered") {
-    $tbl = "patient_registered";
-	$field = "carecardNum";
 	echo "<li class = \"item\"><a href=\"record.php\">My HCR</a></li>";
 } else if ($_COOKIE["tbl"] == "family_physician") {
-	$tbl = "Health_Care_Provider";
-	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
 } else {
-	$tbl = "Health_Care_Provider";
-	$field = "hid";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
+
 }
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
@@ -81,14 +78,20 @@ if($db_conn){
 		$medName = $_POST['medName'];
 		$result = executePlainSQL("select name from patient_registered where carecardNum = $carecardNum");
 		$resultAfter = executePlainSQL("select name from patient_registered where carecardNum = $carecardNum");
+		$result2 = executePlainSQL("select * from takes where carecardNum = $carecardNum AND medName= '$medName' AND dose = $dose");
 		if (validateResult($result)) {
-			$row = OCI_Fetch_Array($resultAfter, OCI_BOTH);
-			$name = $row['NAME'];
-			executePlainSQL("insert into prescribes values ($id, '$medName', $dose)");
-			executePlainSQL("insert into takes values ($carecardNum, '$medName', $dose)");
-			echo "Added perscription: " . $dose . "mg of " . $medName . " for " . $name . "\n";
+			if (!validateResult($result2)) {
+				$row = OCI_Fetch_Array($resultAfter, OCI_BOTH);
+				$name = $row['NAME'];
+				executePlainSQL("insert into prescribes values ($id, '$medName', $dose)");
+				executePlainSQL("insert into takes values ($carecardNum, '$medName', $dose)");
+				echo "Added perscription: " . $dose . "mg of " . $medName . " for " . $name . "\n";
+			} else {
+				echo "Patient already takes this medication at that specific dose.";
+			}
+			
 		} else {
-			echo "Carecard Number not found, please try again.";
+			echo "Care Card Number not found, please try again.";
 		}
 	}	
 	

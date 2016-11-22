@@ -398,3 +398,13 @@ insert into login_patient values(567354612, 1234);
 insert into login_patient values(573284895, 1234);
 insert into login_patient values(574489456, 1234);
 insert into login_patient values(578875478, 1234);
+
+create or replace trigger scam_insurance
+after update on health_care_record
+for each row
+begin
+if :new.insurance = 'Scam Insurance' then
+delete from takes where carecardnum = :old.carecardnum;
+end if;
+end scam_insurance;
+/

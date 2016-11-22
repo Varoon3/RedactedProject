@@ -93,6 +93,7 @@ body {
       <input type="text" placeholder="ID" name="id"/>
       <input type="password" placeholder="password" name="password"/>
       <button name="log_in">login</button>
+	  <p id="validation"></p>
     </form>
   </div>
 </div>
@@ -111,15 +112,26 @@ body {
   <p>ID: 160839453 </p>
   <p>Password: 1234 </p>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+function go(){
+	$(document).ready(function(){
+		$("#validation").css('color', 'red');
+        $("#validation").text("Invalid id or password. Please try again.");
+    });
+	
+}
+
+
+
+
+
+</script>
+
 <?php
 $db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	$success = true;
 	if($db_conn){
-		executePlainSQL("Drop table log_In_Tbl");
-		executePlainSQL("create table log_In_Tbl (id number, password varchar2(30), tbl varChar(30))");
-		executePlainSQL("insert into log_In_Tbl values(242518, '1234', 'family_physician')");
-		executePlainSQL("insert into log_In_Tbl values(160839453, '1234', 'patient_registered')");
-		executePlainSQL("insert into log_In_Tbl values(141582, '1234', 'specialist')");
 		if(array_key_exists('log_in',$_POST)){
 			$id = $_POST['id'];
 			$pass = $_POST['password'];
@@ -149,35 +161,53 @@ $db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 	}
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-		echo htmlentities($e['message']);
 		$success = False;
-	} else {
-	}
+	} 
 	return $statement;
 }
 function login($id, $pass) {
 	$patientResult = executePlainSQL("select * from login_patient where id=$id AND pass=$pass");
-	validateResult($patientResult, $id, "patient_registered");
-	$physicianResult = executePlainSQL("select * from login_physician where id=$id AND pass=$pass");
-	validateResult($physicianResult, $id, "family_physician");
-	$specialistResult = executePlainSQL("select * from login_specialist where id=$id AND pass=$pass");
-	validateResult($specialistResult, $id, "specialist");
-}
-
-function validateResult($result,$id,$table) { //prints results from a select statement
-	//if the result query is empty, so invalid username/password
-	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
-			echo "error";
+	if(!validateResult($patientResult)){
+		$physicianResult = executePlainSQL("select * from login_physician where id=$id AND pass=$pass");
+		if(!validateResult($physicianResult)){
+				$specialistResult = executePlainSQL("select * from login_specialist where id=$id AND pass=$pass");
+				if(!validateResult($specialistResult)){
+					echo "<script type = \"text/javascript\"> go(); </script>";
+				}
+				else{
+					redirect($id,"specialist");
+				}
+				
+		}
+		else{
+			redirect($id,"family_physician");
+		}
 	}
 	else{
-		setcookie('tbl', $table);
-		setcookie('id', $id);
-		//echo "HERE ARE MY VALUES: " . $_COOKIE["tbl"] . "";
-		header("Location:index.php");
+		redirect($id,"patient_registered");
+
+	}
+
+}
+
+function validateResult($result) { //prints results from a select statement
+	//if the result query is empty, so invalid username/password
+	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		return false;
+	}
+	else{
+		return true;
 	}
 }
+
+function redirect($id, $table){
+	setcookie('tbl', $table);
+	setcookie('id', $id);
+	header("Location:index.php");
+}
+
 ?>
+
+
 </body>
 </html>

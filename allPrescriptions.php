@@ -37,10 +37,37 @@ ul {
 	float:right;
 }
 
-.fixed{
-	background-color : #d1d1d1; 
-}
-
+table {
+		margin: 25px auto;
+		border-collapse: collapse;
+		border: 1px solid #eee;
+		border-bottom: 2px solid #00cccc;
+		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
+	}
+	table tr:hover {
+		background: #f4f4f4;
+	}
+	table tr:hover td {
+		color: #555;
+	}
+	table th, table td {
+		color: #999;
+		border: 1px solid #eee;
+		padding: 12px 35px;
+		border-collapse: collapse;
+	}
+	table th {
+		background: #00cccc;
+		color: #fff;
+		text-transform: uppercase;
+		font-size: 12px;
+	}
+	table th.last {
+		border-right: none;
+	}
+	body{
+		font-family: "Roboto", sans-serif;
+	}
 
 </style>
 <body>
@@ -51,11 +78,13 @@ ul {
 
 <hr>
 <?php
+
 echo "<ul>";
 echo "<li class = \"item\"><a href=\"index.php\">My Appointments</a></li>";
 
-if($_COOKIE["tbl"] == "patient_registered") {
-	echo "<li class = \"item\"><a href=\"record.php\">My HCR</a></li>";
+
+if($_COOKIE["tbl"] != "family_physician" && $_COOKIE["tbl"] != "specialist") {
+   	header("Location:logout.php");
 } else if ($_COOKIE["tbl"] == "family_physician") {
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
 	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
@@ -72,21 +101,19 @@ if($_COOKIE["tbl"] == "patient_registered") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-
 $db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
-	$id = $_GET["carecardNum"];
-	$result = executePlainSQL("select * from health_care_record where carecardnum = $id");
-	$resultAfter = executePlainSQL("select * from health_care_record where carecardnum = $id");
-	validateResult($result, $resultAfter);
-	if(array_key_exists('update_2',$_POST)){
-		$insurance = $_POST['ins'];
-		$result = executePlainSQL("UPDATE health_care_record SET insurance='$insurance' WHERE carecardNum=$id");
-		echo "Updated Health Care Record Successfully!";
+	$result = executePlainSQL("select * from takes");
+	$resultAfter = executePlainSQL("select * from takes");
+	if(validateResult($result)){
+		printPrescriptions($resultAfter);
 	}
-	//want to present list of patients if provider
-
+	else{
+		echo "No prescriptions are assigned.";
+	}
+	
+	
 	OCICommit($db_conn);
 	
 OCILogoff($db_conn);
@@ -118,43 +145,24 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 	return $statement;
 }
 
-function validateResult($result, $resultNext) { //Checks if the Query is Empty, then sends a copy of the result to print
-	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<br>Error: No Patients!</br>";
-	}
-	else{
-		printHCR($resultNext);
-	}
-}
-
-
-function printHCR($result) { //prints results from a select statement
-	echo "<br>You can only update insurance details: <br>";
-	echo "<br>";
-	
+function printPrescriptions($result) { //prints results from a select statement
+	echo "<br>Here are your upcoming appointments: <br>";
+	echo "<table>";
+	echo "<tr><th>Care Card Number</th><th>Medication Name</th><th>Dose</th></tr>";
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<form method=\"POST\" action=\"update.php?carecardNum=" .$row["CARECARDNUM"]. "\">";
-		echo "Care card Number: <input class=\"fixed\" type=\"text\" value=\"" .$row["CARECARDNUM"]. "\" disabled>";
-		echo "<br>";
-		echo "Record ID: <input class=\"fixed\" type=\"text\" value=\"" .$row["RID"]. "\" disabled>";
-		echo "<br>";
-		echo "Age: <input class=\"fixed\" type=\"text\" value=\"" .$row["AGE"]. "\" disabled>";
-		echo "<br>";
-		echo "Ethnicity: <input class=\"fixed\" type=\"text\" value=\"" .$row["ETHNICITY"]. "\" disabled>";
-		echo "<br>";
-		echo "Insurance: <input type=\"text\" value=\"" .$row["INSURANCE"]. "\" name=\"ins\">";
-		echo "<br>";
-		echo "Genetic History: <input class=\"fixed\" type=\"text\" value=\"" .$row["GENETICHISTORY"]. "\" disabled>";
-		echo "<br>";
-		echo "<input type=\"submit\" value=\"Update\" name=\"update_2\" >";
-		echo "</form>";
-		//echo "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["RID"] . "</td><td>" . $row["AGE"] . "</td><td>" . $row["ETHNICITY"] . "</td><td>" . $row["INSURANCE"] . "</td><td>" . $row["GENETICHISTORY"] . "</td></tr>"; //or just use "echo $row[0]" 
-		//bug here
-	
-	
+		echo "<tr><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["MEDNAME"] . "</td><td>" . $row["DOSE"] . "</td></tr>"; //or just use "echo $row[0]" 
 	}
-	//echo "</table>";
+	echo "</table>";
 }
+
+function validateResult($result) { //prints results from a select statement
+	//if the result query is empty, so invalid username/password
+	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
+			return false;
+	}
+	return true;
+}
+  
 ?>
 
 </body>

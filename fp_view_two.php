@@ -105,14 +105,17 @@ if($_COOKIE["tbl"] == "patient_registered") {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
 	echo "<li class = \"item\"><a href=\"fp_view_two.php\">My Patients</a></li>";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
+
 } else {
 	$tbl = "Health_Care_Provider";
 	$field = "hid";
-	echo "<li class = \"item\"><a href=\"homepage.php\">Analytics</a></li>";
+	echo "<li class = \"item\"><a href=\"analytics.php\">Analytics</a></li>";
 	echo "<li class = \"item\"><a href=\"waitlist.php\">Waitlist</a></li>";
 	echo "<li class = \"item\"><a href=\"prescribe.php\">File Prescription</a></li>";
+	echo "<li class = \"item\"><a href=\"allPrescriptions.php\">All Prescriptions</a></li>";
 }
 	
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
@@ -156,18 +159,14 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 	}
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-		echo htmlentities($e['message']);
 		$success = False;
-	} else {
-	}
+	} 
 	return $statement;
 }
 
 function validateResult($result, $resultNext) { //Checks if the Query is Empty, then sends a copy of the result to print
 	if(!$row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<br>Error: No Patients!</br>";
+		echo "<br>There are no patients registered with you!</br>";
 	}
 	else{
 		printAllMyPatients($resultNext);
