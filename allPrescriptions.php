@@ -101,7 +101,7 @@ if($_COOKIE["tbl"] != "family_physician" && $_COOKIE["tbl"] != "specialist") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	$result = executePlainSQL("select * from takes");
@@ -146,7 +146,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 
 function printPrescriptions($result) { //prints results from a select statement
-	echo "<br>Here are your upcoming appointments: <br>";
 	echo "<table>";
 	echo "<tr><th>Care Card Number</th><th>Medication Name</th><th>Dose</th></tr>";
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {

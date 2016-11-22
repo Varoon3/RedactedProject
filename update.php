@@ -73,7 +73,7 @@ echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></l
 echo "</ul>";
 
 
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	$id = $_GET["carecardNum"];

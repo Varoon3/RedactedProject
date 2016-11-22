@@ -119,7 +119,7 @@ table {
 
 
 		<?php
-		$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+		$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 		$success = true;
 		$edmontonTotal = 0;
 		$montrealTotal = 0;

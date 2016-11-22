@@ -75,7 +75,7 @@ if($_COOKIE["tbl"] == "patient_registered") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	$id = $_COOKIE['id'];
@@ -135,9 +135,7 @@ function printHCR($result,$result2){
 	}
 	
 	while ($row = OCI_Fetch_Array($result2, OCI_BOTH)) {
-		echo "Medication Name: " .$row["MEDNAME"]. "";
-		echo "<br>";
-		echo "Dose: " .$row["DOSE"]. "";
+		echo "Medication: " .$row["MEDNAME"]. "(" . $row["DOSE"] . "mg)";
 		echo "<br>";
 	}
 echo "</div>";

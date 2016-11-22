@@ -52,6 +52,8 @@ SELECT location FROM health_care_provider WHERE hid=$id
 
 SELECT * FROM patient_registered WHERE carecardNum=$id AND hid=$hid
 
+SELECT * FROM is_on WHERE carecardNum=$id AND speciality='$spec' AND region='$reg'
+
 -- record
 UPDATE health_care_record SET insurance = '$hcp' WHERE carecardNum = $id
 

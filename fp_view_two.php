@@ -121,7 +121,7 @@ if($_COOKIE["tbl"] == "patient_registered") {
 echo "<li class = \"item\" id = \"logout\"><a href=\"logout.php\">Log Out</a></li>";
 echo "</ul>";
 
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 
 
@@ -185,7 +185,7 @@ function printAllMyPatients($result){
 		echo "<tr id=\"patient" .$count. "\" class=\"trying\"><td>" . $row["CARECARDNUM"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["LOCATION"] . 
 			"</td><td><form method=\"POST\" action=\"update.php?carecardNum=" .$row["CARECARDNUM"]. "\"><input type=\"submit\" id=\"update" .$count. 
 			"\" value=\"Update\" name=\"update\" ></form><form method=\"POST\" action=\"fp_view_two.php?tbl=family_physician&carecardNum=" .$row["CARECARDNUM"]. 
-			"\"><input type=\"submit\" id=\"delete" .$count. "\" value=\"Delete Patient\" name=\"delete\" >" . 
+			"\"><input type=\"submit\" id=\"delete" .$count. "\" value=\"Unregister\" name=\"delete\" >" . 
 			"</form><form method=\"POST\" action=\"bookAppointment.php\"><input type=\"submit\" id=\"appointment" .$count. "\" value=\"Make Appointment\" name=\"appointment\" ><input type=\"hidden\" name=\"fccn\" value=\"" . $row["CARECARDNUM"] . "\">" . 
 			"<input type=\"hidden\" name=\"fname\" value=\"" . $row["NAME"] . "\"></form></td></tr>";
 		$arr[$count] = $row["CARECARDNUM"];

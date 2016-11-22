@@ -116,7 +116,7 @@ if($_COOKIE['tbl'] == "family_physician")
 else
 	$_POST['view'] = true;
 echo "</br>";
-$db_conn = OCILogon("ora_c7n0b", "a40860158", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_b2k0b", "a33405151", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 $success = true;
 if($db_conn){
 	if(isset($_POST['modify'])){
@@ -129,13 +129,13 @@ if($db_conn){
 			$date = date("Y/d/m");
 			$time = date("H:i");
 			//adding a patient to a certain waitlist, need to validate input before
-			if(checkInput($id,$priority)){
+			if(checkInput($id,$priority,$speciality,$region)){
 				$result1 = executePlainSQL("UPDATE is_on SET patientPriorityNum = patientPriorityNum + 1 WHERE patientPriorityNum >= $priority AND region = '$region' AND speciality = '$speciality'");
 				$result2 = executePlainSQL("insert into is_on values ($id,'$region', '$speciality', $priority ,'$date', '$time')");
 				echo "<h4>Patient added successfuly to waitlist of " .$speciality. " in " .$region. " <h4>";
 			}
 			else{
-				echo "Care Card Number entered does not exist or is not registered with you.";
+				echo "Either this carecard number is not one of your patients or they are already on this list.";
 			}
 		} else {
 			$region = $_COOKIE['region'];
@@ -308,12 +308,16 @@ function getRegion(){
 	
 }
 
-function checkInput($id,$priority){
+function checkInput($id,$priority, $spec, $reg){
 	if($priority <= 0)
 		return false;
 	$hid = $_COOKIE['id'];
 	$someQuery = executePlainSQL("SELECT * FROM patient_registered WHERE carecardNum=$id AND hid=$hid");
 	if(!$row = OCI_Fetch_Array($someQuery, OCI_BOTH)) {
+		return false;
+	}
+	$onList = executePlainSQL("SELECT * FROM is_on WHERE carecardNum=$id AND speciality='$spec' AND region='$reg'");
+	if($row = OCI_Fetch_Array($onList, OCI_BOTH)) {
 		return false;
 	}
 	return true;
