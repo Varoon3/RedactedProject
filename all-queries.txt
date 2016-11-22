@@ -1,0 +1,79 @@
+-- homepage
+SELECT * FROM login_patient WHERE id=$id AND pass=$pass
+
+SELECT * FROM login_physician WHERE id=$id AND pass=$pass
+
+SELECT * FROM login_specialist WHERE id=$id AND pass=$pass
+
+-- fp_view_two
+Update patient_registered SET hid = NULL WHERE carecardNum=$id
+
+SELECT carecardNum, name, location FROM patient_registered WHERE hid = $id order by carecardNum
+
+SELECT p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory FROM health_care_record h, patient_registered p WHERE h.carecardnum=p.carecardNum AND p.carecardnum=$arr[$i]
+
+-- bookAppointment
+SELECT * FROM has_appointment WHERE carecardNum = $carecard AND hid = $hid
+
+INSERT INTO has_appointment values ($carecard,$hid,'$date','$time')
+
+-- analytics
+SELECT p.location, count(h.carecardnum) FROM patient_registered p, health_care_record h WHERE p.carecardnum = h.carecardnum AND h.genetichistory like '%$sequence%' group by p.location order by p.location
+
+SELECT p.location, h.ethnicity, count(h.carecardnum) FROM patient_registered p, health_care_record h WHERE p.carecardnum = h.carecardnum AND h.genetichistory like '%$sequence%' group by (p.location, h.ethnicity) order by p.location
+
+SELECT p.name, p.location, p.carecardnum FROM patient_registered p WHERE not exists ((SELECT distinct medName FROM medication) MINUS (SELECT distinct m.medName FROM medication m, takes t WHERE t.carecardnum = p.carecardnum AND m.medName = t.medName))
+
+SELECT medName, MAX(dose) FROM medication group by medName having MAX(dose) = (SELECT MAX(dose) FROM medication)
+
+SELECT medName, MIN(dose) FROM medication group by medName having MIN(dose) = (SELECT MIN(dose) FROM medication)
+
+SELECT ethnicity, count(*), avg(age) FROM health_care_record group by ethnicity order by count(*)
+
+-- allPrescriptions
+SELECT * FROM takes
+
+-- waitlist
+UPDATE is_on SET patientPriorityNum = patientPriorityNum + 1 WHERE patientPriorityNum >= $priority AND region = '$region' AND speciality = '$speciality'
+
+INSERT INTO is_on values ($id,'$region', '$speciality', $priority ,'$date', '$time')
+
+SELECT p.carecardNum, p.name FROM patient_registered p, is_on w WHERE p.carecardNum = w.carecardNum AND w.patientPriorityNum = 1 AND w.region = '$region' AND w.speciality = '$speciality'
+
+DELETE FROM is_on WHERE carecardNum = $careCardNum AND region = '$region' AND speciality = '$speciality'
+
+UPDATE is_on SET patientPriorityNum = patientPriorityNum - 1 WHERE patientPriorityNum >= 1 AND region = '$region' AND speciality = '$speciality'
+
+SELECT i.carecardNum, p.name, i.patientPriorityNum, i.dateOfEntry, i.timeOfEntry FROM is_on i, patient_registered p WHERE i.speciality = '$speciality' AND i.region='$region' AND i.careCardNum = p.careCardNum ORDER BY patientPriorityNum
+
+SELECT speciality FROM specialist WHERE hid=$id
+
+SELECT location FROM health_care_provider WHERE hid=$id
+
+SELECT * FROM patient_registered WHERE carecardNum=$id AND hid=$hid
+
+-- record
+UPDATE health_care_record SET insurance = '$hcp' WHERE carecardNum = $id
+
+SELECT p.name, p.location, h.carecardnum, h.rid, h.age, h.ethnicity, h.insurance, h.genetichistory FROM health_care_record h, patient_registered p WHERE h.carecardnum=p.carecardNum AND p.carecardnum=$id
+
+-- UPDATE
+SELECT * FROM health_care_record WHERE carecardnum = $id
+
+UPDATE health_care_record SET insurance='$insurance' WHERE carecardNum=$id
+
+-- prescribe
+SELECT name FROM patient_registered WHERE carecardNum = $carecardNum
+
+SELECT * FROM takes WHERE carecardNum = $carecardNum AND medName= '$medName' AND dose = $dose
+
+INSERT INTO prescribes values ($id, '$medName', $dose)
+
+INSERT INTO takes values ($carecardNum, '$medName', $dose)
+
+-- index
+SELECT NAME FROM $tbl WHERE $field = $id
+
+SELECT h.carecardNum, p.name, h.dateAppointment, h.timeAppointment FROM patient_registered p, has_appointment h WHERE h.carecardNum = p.carecardNum AND h.hid = $id order by h.dateAppointment, h.timeAppointment
+
+SELECT r.name, h.dateAppointment, h.timeAppointment, r.location FROM has_appointment h, Health_Care_Provider r WHERE h.carecardNum = $id AND r.hid = h.hid order by h.dateAppointment, h.timeAppointment
